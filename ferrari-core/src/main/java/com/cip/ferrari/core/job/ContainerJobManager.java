@@ -3,6 +3,8 @@
  */
 package com.cip.ferrari.core.job;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
@@ -51,8 +53,12 @@ public class ContainerJobManager {
 		};
 	}
 	
-	public void runJob() {
+	public void runJob(String uuid, String jobName,List<String> returnUrllist,long beginTime,Map<String,String> jobParam) {
 
+	}
+	
+	public void killJob(String jobuuid){
+		
 	}
 
 	public void dispose() {
