@@ -57,14 +57,15 @@ public class FerrariRunnerFacade {
 				}
 				String beginTimeStr = jobParam
 						.remove(JobConstants.KEY_BEGIN_TIME);
-				Long beginTime = null;
+				Date beginTime = null;
 				if (StringUtils.isBlank(beginTimeStr)) {
-					beginTime = new Date().getTime();
+					beginTime = new Date();
 				} else {
 					try {
-						beginTime = Long.parseLong(beginTimeStr);
+						long time = Long.parseLong(beginTimeStr);
+						beginTime = new Date(time); 
 					} catch (Exception e) {
-						beginTime = new Date().getTime();
+						beginTime = new Date();
 					}
 				}
 				containerJobManager.runJob(uuid, jobName, returnUrllist,
