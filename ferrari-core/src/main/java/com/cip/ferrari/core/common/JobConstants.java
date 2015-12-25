@@ -52,5 +52,8 @@ public class JobConstants {
 	// ===========VLAUE For KEY_ACTION=================
 	public static final String VALUE_ACTION_RUN_JOB = "run";
 	public static final String VALUE_ACTION_KILL_JOB = "terminate";
+	
+	//应用方向调度中心二次反馈的key
+	public static final String KEY_FEEDBACK_RESULT       = "result";
 
 }

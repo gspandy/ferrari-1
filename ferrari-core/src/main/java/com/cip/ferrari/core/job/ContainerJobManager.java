@@ -87,7 +87,7 @@ public class ContainerJobManager {
 	 * @param job
 	 */
 	private void beforeRun(Thread thread, ManagedJob job) {
-		if (jobInfo2JobIdMap.contains(job.getJobInfo())) {
+		if (jobInfo2JobIdMap.containsKey(job.getJobInfo())) {
 			jobInfo2JobIdMap.get(job.getJobInfo()).add(job.getUuid());
 		} else {
 			CopyOnWriteArrayList<String> jobIdList = new CopyOnWriteArrayList<String>();
@@ -109,9 +109,22 @@ public class ContainerJobManager {
 	 * @param throwable
 	 */
 	private void afterRun(ManagedJob job, Throwable throwable) {
+		 // run方法约定不会抛出异常，
+        // 在ThreadPoolExecutor自己不抛出异常的情况下，Throwable 总是为空的
+		if (throwable != null) {
+            logger.error("throw a Throwable when run Job:"+job.toString(),throwable);
+        }
 		jobId2JobMap.remove(job.getUuid());
-		if (job2ThreadMap.contains(job)) {
-			// TODO
+		if(jobInfo2JobIdMap.containsKey(job.getJobInfo())){
+			jobInfo2JobIdMap.get(job.getJobInfo()).remove(job.getUuid());
+		}
+		if (job2ThreadMap.containsKey(job)) {
+			job2ThreadMap.remove(job);
+			Throwable t1 = job.getRunThrowable();
+			if(t1 == null && throwable != null){
+				job.setRunThrowable(throwable);
+			}
+			FeedbackHandler.getInstance().jobFinished2Feedback(job);
 		}
 	}
 
@@ -126,7 +139,7 @@ public class ContainerJobManager {
 	 */
 	public void runJob(String uuid, String jobName, List<String> returnUrllist,
 			Date beginTime, Map<String, String> jobParam) {
-		if (jobId2JobMap.contains(uuid)) {
+		if (jobId2JobMap.containsKey(uuid)) {
 			logger.warn("job already in running,jobid=" + uuid + ",jobName="
 					+ jobName);
 			return;

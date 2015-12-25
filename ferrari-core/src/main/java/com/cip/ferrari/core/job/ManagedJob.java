@@ -194,9 +194,23 @@ public class ManagedJob implements Runnable {
 	public Throwable getRunThrowable() {
 		return runThrowable;
 	}
+	
+	public void setRunThrowable(Throwable runThrowable) {
+		this.runThrowable = runThrowable;
+	}
 
 	public Object getReturnObject() {
 		return returnObject;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ManagedJob[");
+		sb.append("uuid=").append(uuid).append(",");
+		sb.append("jobName=").append(jobName).append(",");
+		sb.append("jobInfo=").append(jobInfo).append("]");
+		return sb.toString();
 	}
 
 }

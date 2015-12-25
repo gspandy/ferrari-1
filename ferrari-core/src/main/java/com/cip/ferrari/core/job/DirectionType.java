@@ -16,6 +16,10 @@ public enum DirectionType {
     /**
      * 终止Job运行
      */
-    KILL_JOB
+    KILL_JOB,
+    /**
+     * 返回Job的运行结果
+     */
+    RETURN_JOB_RESULT
     
 }
