@@ -121,7 +121,7 @@ public class ContainerJobManager {
 		if (job2ThreadMap.containsKey(job)) {
 			job2ThreadMap.remove(job);
 			Throwable t1 = job.getRunThrowable();
-			if(t1 == null && throwable != null){
+			if(t1 == null && throwable != null){//job运行没抛异常，其它原因导致异常，比如线程池
 				job.setRunThrowable(throwable);
 			}
 			FeedbackHandler.getInstance().jobFinished2Feedback(job);
