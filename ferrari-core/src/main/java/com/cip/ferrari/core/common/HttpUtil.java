@@ -18,7 +18,30 @@ import org.apache.commons.io.IOUtils;
  */
 public class HttpUtil {
 
+	/**
+	 * 发送http get 请求
+	 * @param url 完整的url
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public static String sendHttpGet(String url) throws MalformedURLException, IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setConnectTimeout(3000);
+        connection.setDoOutput(true);
+        connection.connect();
+
+        return IOUtils.toString(connection.getInputStream(), "UTF-8");
+    }
 	
+	/**
+	 * 发送http post请求
+	 * @param destUrl 完整得url地址
+	 * @param httpParams 请求参数
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public static String sendHttpPost(String destUrl, Map<String, String> httpParams)
             throws MalformedURLException, IOException {
         final URL url = new URL(destUrl);
