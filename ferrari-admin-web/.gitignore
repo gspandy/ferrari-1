@@ -19,3 +19,4 @@ atlassian-ide-plugin.xml
 maven-ant-tasks.jar
 test-output
 classes
+/target/
