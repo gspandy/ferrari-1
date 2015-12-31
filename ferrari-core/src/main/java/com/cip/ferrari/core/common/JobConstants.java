@@ -43,7 +43,22 @@ public class JobConstants {
 	 * 方法入参，多个参数用 , 分隔
 	 */
 	public static final String KEY_RUN_METHOD_ARGS = "run_method_args";
+	
+	/**
+	 * 任务描述
+	 */
+	public static final String KEY_JOB_DESC = "job_desc";
+	
+	/**
+	 * 任务机器地址,格式	IP:PORT
+	 */
+	public static final String KEY_JOB_ADDRESS = "job_address";
+	/**
+	 * 任务机器地址生成URL模板
+	 */
+	public static final String KEY_JOB_ADDRESS_TEMPLATE = "http://{job_address}/ferraricontainer/";
 
+	
 	/**
 	 * job开始触发运行的时间，long变量
 	 */
