@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import com.cip.ferrari.admin.dao.IXxlJobLogDao;
+import com.cip.ferrari.admin.dao.IFerraliJobLogDao;
 
 /**
  * base quartz scheduler util
@@ -38,12 +38,12 @@ public final class DynamicSchedulerUtil implements InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(DynamicSchedulerUtil.class);
     
     // xxlJobLogDao
-    public static IXxlJobLogDao xxlJobLogDao;
+    public static IFerraliJobLogDao xxlJobLogDao;
     @Resource
-    public void setXxlJobLogDao(IXxlJobLogDao xxlJobLogDao) {
+    public void setXxlJobLogDao(IFerraliJobLogDao xxlJobLogDao) {
 		DynamicSchedulerUtil.xxlJobLogDao = xxlJobLogDao;
 	}
-    public static IXxlJobLogDao getXxlJobLogDao() {
+    public static IFerraliJobLogDao getXxlJobLogDao() {
 		return xxlJobLogDao;
 	}
     

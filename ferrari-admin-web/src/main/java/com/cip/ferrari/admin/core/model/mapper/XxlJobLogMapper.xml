@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="XxlJobLogMapper">
+<mapper namespace="FerraliJobLogMapper">
 	
-	<resultMap id="XxlJobLog" type="com.cip.ferrari.admin.core.model.XxlJobLog" >
+	<resultMap id="FerraliJobLog" type="com.cip.ferrari.admin.core.model.FerraliJobLog" >
 		<result column="id" property="id" />
 	
 	    <result column="job_name" property="jobName" />
@@ -34,8 +34,8 @@
 		t.handle_msg
 	</sql>
 	
-	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.XxlJobLog" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO `qrtz_trigger_log` (
+	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerraliJobLog" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO `fri_qrtz_trigger_log` (
 			`job_name`, 
 			`job_cron`, 
 			`job_class`, 
@@ -51,14 +51,14 @@
 		</selectKey> 
 	</insert>
 	
-	<select id="load" parameterType="java.lang.Integer" resultMap="XxlJobLog">
+	<select id="load" parameterType="java.lang.Integer" resultMap="FerraliJobLog">
 		SELECT <include refid="Base_Column_List" />
-		FROM qrtz_trigger_log AS t
+		FROM fri_qrtz_trigger_log AS t
 		WHERE t.id = #{id}
 	</select>
 	
 	<update id="updateTriggerInfo">
-		UPDATE `qrtz_trigger_log` 
+		UPDATE `fri_qrtz_trigger_log` 
 		SET 
 			`trigger_time`= #{triggerTime}, 
 			`trigger_status`= #{triggerStatus}, 
@@ -67,7 +67,7 @@
 	</update>
 	
 	<update id="updateHandleInfo">
-		UPDATE `qrtz_trigger_log` 
+		UPDATE `fri_qrtz_trigger_log` 
 		SET 
 			`handle_time`= #{handleTime}, 
 			`handle_status`= #{handleStatus}, 
@@ -75,9 +75,9 @@
 		WHERE `id`= #{id}
 	</update>
 	
-	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobLog">
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="FerraliJobLog">
 		SELECT <include refid="Base_Column_List" />
-		FROM qrtz_trigger_log AS t
+		FROM fri_qrtz_trigger_log AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="jobName != null and jobName!=''">
 				AND t.job_name = #{jobName}
@@ -95,7 +95,7 @@
 	
 	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
 		SELECT count(1)
-		FROM qrtz_trigger_log AS t
+		FROM fri_qrtz_trigger_log AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="jobName != null and jobName!=''">
 				AND t.job_name = #{jobName}
