@@ -26,7 +26,7 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="callout callout-info">
-				<h4>简介：XXL_JOB</h4>
+				<h4>简介：FERRALI</h4>
 				<p>基于quartz封装实现的的集群任务调度管理平台.</p>
 				<p></p>
             </div>

@@ -156,8 +156,10 @@
 			<b>Version</b> 1.0
 		</div>
 		<strong>Copyright &copy; 2015-2015 &nbsp;
+			<!---->
 			<a href="https://github.com/xuxueli/xxl-job" target="_blank" >github</a>&nbsp;
 			<a href="http://www.cnblogs.com/xuxueli/p/5021979.html" target="_blank" >cnblog</a>.
+			
 		</strong> All rights reserved.
 	</footer>
 </#macro>

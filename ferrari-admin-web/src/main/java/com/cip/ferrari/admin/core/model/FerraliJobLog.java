@@ -3,10 +3,10 @@ package com.cip.ferrari.admin.core.model;
 import java.util.Date;
 
 /**
- * xxl-job log, used to track trigger process
+ * ferrali log, used to track trigger process
  * @author xuxueli  2015-12-19 23:19:09
  */
-public class XxlJobLog {
+public class FerraliJobLog {
 	
 	private int id;
 	// job info
@@ -94,7 +94,7 @@ public class XxlJobLog {
 	
 	@Override
 	public String toString() {
-		return "XxlJobLog [id=" + id + ", jobName=" + jobName + ", jobCron=" + jobCron + ", jobClass=" + jobClass
+		return "FerraliJobLog [id=" + id + ", jobName=" + jobName + ", jobCron=" + jobCron + ", jobClass=" + jobClass
 				+ ", jobData=" + jobData + ", triggerTime=" + triggerTime + ", triggerStatus=" + triggerStatus
 				+ ", triggerMsg=" + triggerMsg + ", handleTime=" + handleTime + ", handleStatus=" + handleStatus
 				+ ", handleMsg=" + handleMsg + "]";

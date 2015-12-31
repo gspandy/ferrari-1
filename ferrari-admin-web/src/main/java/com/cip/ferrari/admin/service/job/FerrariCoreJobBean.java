@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.cip.ferrari.admin.core.model.XxlJobLog;
+import com.cip.ferrari.admin.core.model.FerraliJobLog;
 import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
@@ -36,12 +36,12 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		Map<String, Object> jobDataMap = context.getMergedJobDataMap().getWrappedMap();
 		
 		// save log
-		XxlJobLog jobLog = new XxlJobLog();
+		FerraliJobLog jobLog = new FerraliJobLog();
 		jobLog.setJobName(context.getTrigger().getJobKey().getName());
 		jobLog.setJobCron((context.getTrigger() instanceof CronTriggerImpl)?(((CronTriggerImpl) context.getTrigger()).getCronExpression()):"");
 		jobLog.setJobClass(FerrariCoreJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(jobDataMap));
-		DynamicSchedulerUtil.xxlJobLogDao.save(jobLog);
+		DynamicSchedulerUtil.getFerraliJobLogDao().save(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger start, jobLog:{}", jobLog);
 		
 		// request param
@@ -80,7 +80,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		}
 		
 		// update trigger info
-		DynamicSchedulerUtil.xxlJobLogDao.updateTriggerInfo(jobLog);
+		DynamicSchedulerUtil.getFerraliJobLogDao().updateTriggerInfo(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger end, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
 		
     }

@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cip.ferrari.admin.core.model.ReturnT;
-import com.cip.ferrari.admin.core.model.XxlJobLog;
+import com.cip.ferrari.admin.core.model.FerraliJobLog;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
-import com.cip.ferrari.admin.dao.IXxlJobLogDao;
+import com.cip.ferrari.admin.dao.IFerraliJobLogDao;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
 /**
@@ -35,17 +35,17 @@ public class JobLogController {
 	private static Logger Logger = LoggerFactory.getLogger(JobLogController.class);
 	
 	@Resource
-	public IXxlJobLogDao xxlJobLogDao;
+	public IFerraliJobLogDao ferraliJobLogDao;
 	
 	@RequestMapping("/save")
 	@ResponseBody
 	public ReturnT<String> triggerLog(int triggerLogId, String status, String msg) {
-		XxlJobLog log = xxlJobLogDao.load(triggerLogId);
+		FerraliJobLog log = ferraliJobLogDao.load(triggerLogId);
 		if (log!=null) {
 			log.setHandleTime(new Date());
 			log.setHandleStatus(status);
 			log.setHandleMsg(msg);
-			xxlJobLogDao.updateHandleInfo(log);
+			ferraliJobLogDao.updateHandleInfo(log);
 			Logger.info("JobLogController.triggerLog success, triggerLogId:{}, status:{}, msg:{}", triggerLogId, status, msg);
 			return ReturnT.SUCCESS;
 		}
@@ -97,8 +97,8 @@ public class JobLogController {
 		}
 		
 		// page query
-		List<XxlJobLog> list = xxlJobLogDao.pageList(start, length, jobName, triggerTimeStart, triggerTimeEnd);
-		int list_count = xxlJobLogDao.pageListCount(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+		List<FerraliJobLog> list = ferraliJobLogDao.pageList(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+		int list_count = ferraliJobLogDao.pageListCount(start, length, jobName, triggerTimeStart, triggerTimeEnd);
 		
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();

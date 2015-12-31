@@ -9,44 +9,44 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.cip.ferrari.admin.core.model.XxlJobLog;
-import com.cip.ferrari.admin.dao.IXxlJobLogDao;
+import com.cip.ferrari.admin.core.model.FerraliJobLog;
+import com.cip.ferrari.admin.dao.IFerraliJobLogDao;
 
 @Repository
-public class XxlJobLogDaoImpl implements IXxlJobLogDao {
+public class FerraliJobLogDaoImpl implements IFerraliJobLogDao {
 	
 	@Resource
 	public SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public int save(XxlJobLog xxlJobLog) {
-		return sqlSessionTemplate.insert("XxlJobLogMapper.save", xxlJobLog);
+	public int save(FerraliJobLog xxlJobLog) {
+		return sqlSessionTemplate.insert("FerraliJobLogMapper.save", xxlJobLog);
 	}
 
 	@Override
-	public XxlJobLog load(int id) {
-		return sqlSessionTemplate.selectOne("XxlJobLogMapper.load", id);
+	public FerraliJobLog load(int id) {
+		return sqlSessionTemplate.selectOne("FerraliJobLogMapper.load", id);
 	}
 
 	@Override
-	public int updateTriggerInfo(XxlJobLog xxlJobLog) {
-		return sqlSessionTemplate.update("XxlJobLogMapper.updateTriggerInfo", xxlJobLog);
+	public int updateTriggerInfo(FerraliJobLog xxlJobLog) {
+		return sqlSessionTemplate.update("FerraliJobLogMapper.updateTriggerInfo", xxlJobLog);
 	}
 
 	@Override
-	public int updateHandleInfo(XxlJobLog xxlJobLog) {
-		return sqlSessionTemplate.update("XxlJobLogMapper.updateHandleInfo", xxlJobLog);
+	public int updateHandleInfo(FerraliJobLog xxlJobLog) {
+		return sqlSessionTemplate.update("FerraliJobLogMapper.updateHandleInfo", xxlJobLog);
 	}
 
 	@Override
-	public List<XxlJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
+	public List<FerraliJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		return sqlSessionTemplate.selectList("XxlJobLogMapper.pageList", params);
+		return sqlSessionTemplate.selectList("FerraliJobLogMapper.pageList", params);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class XxlJobLogDaoImpl implements IXxlJobLogDao {
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		return sqlSessionTemplate.selectOne("XxlJobLogMapper.pageListCount", params);
+		return sqlSessionTemplate.selectOne("FerraliJobLogMapper.pageListCount", params);
 	}
 	
 }

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.cip.ferrari.admin.core.model.XxlJobLog;
+import com.cip.ferrari.admin.core.model.FerraliJobLog;
 import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
@@ -49,12 +49,12 @@ public class HttpJobBean extends QuartzJobBean {
 		}
 		
 		// save log
-		XxlJobLog jobLog = new XxlJobLog();
+		FerraliJobLog jobLog = new FerraliJobLog();
 		jobLog.setJobName(triggerKey);
 		jobLog.setJobCron(cornExp);
 		jobLog.setJobClass(HttpJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(params));
-		DynamicSchedulerUtil.xxlJobLogDao.save(jobLog);
+		DynamicSchedulerUtil.getFerraliJobLogDao().save(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger start, jobLog:{}", jobLog);
 		
 		// trigger request
@@ -80,7 +80,7 @@ public class HttpJobBean extends QuartzJobBean {
 		}
 		
 		// update trigger info
-		DynamicSchedulerUtil.xxlJobLogDao.updateTriggerInfo(jobLog);
+		DynamicSchedulerUtil.getFerraliJobLogDao().updateTriggerInfo(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger end, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
 		
     }
