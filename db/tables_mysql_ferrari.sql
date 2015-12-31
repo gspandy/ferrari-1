@@ -173,10 +173,10 @@ CREATE TABLE `fri_qrtz_trigger_log` (
   `job_data` varchar(2048) DEFAULT NULL,
   `trigger_time` datetime DEFAULT NULL,
   `trigger_status` varchar(255) DEFAULT NULL,
-  `trigger_msg` varchar(255) DEFAULT NULL,
+  `trigger_msg` varchar(2048) DEFAULT NULL,
   `handle_time` datetime DEFAULT NULL,
   `handle_status` varchar(255) DEFAULT NULL,
-  `handle_msg` varchar(255) DEFAULT NULL,
+  `handle_msg` varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
 

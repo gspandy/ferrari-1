@@ -40,7 +40,7 @@ public final class DynamicSchedulerUtil implements InitializingBean {
     // ferraliJobLogDao
     public static IFerraliJobLogDao ferraliJobLogDao;
     @Resource
-    public static void setFerraliJobLogDao(IFerraliJobLogDao ferraliJobLogDao) {
+    public void setFerraliJobLogDao(IFerraliJobLogDao ferraliJobLogDao) {
 		DynamicSchedulerUtil.ferraliJobLogDao = ferraliJobLogDao;
 	}
     public static IFerraliJobLogDao getFerraliJobLogDao() {

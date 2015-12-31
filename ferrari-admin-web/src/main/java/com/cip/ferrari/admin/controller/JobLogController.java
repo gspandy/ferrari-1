@@ -45,6 +45,11 @@ public class JobLogController {
 			log.setHandleTime(new Date());
 			log.setHandleStatus(status);
 			log.setHandleMsg(msg);
+			
+			if (log.getHandleMsg()!=null && log.getHandleMsg().length()>1500) {
+				log.setHandleMsg(log.getHandleMsg().substring(0, 1500));
+			}
+			
 			ferraliJobLogDao.updateHandleInfo(log);
 			Logger.info("JobLogController.triggerLog success, triggerLogId:{}, status:{}, msg:{}", triggerLogId, status, msg);
 			return ReturnT.SUCCESS;

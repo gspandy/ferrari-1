@@ -80,6 +80,9 @@ public class HttpJobBean extends QuartzJobBean {
 		}
 		
 		// update trigger info
+		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1500) {
+			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
+		}
 		DynamicSchedulerUtil.getFerraliJobLogDao().updateTriggerInfo(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger end, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
 		
