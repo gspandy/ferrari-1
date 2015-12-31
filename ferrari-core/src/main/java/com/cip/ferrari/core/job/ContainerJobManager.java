@@ -3,7 +3,6 @@
  */
 package com.cip.ferrari.core.job;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class ContainerJobManager {
 			64);
 
 	/**
-	 * job信息和jobid的map key:class_method
+	 * job信息和jobid的map key:class_method value-uuidlist
 	 */
 	private final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> jobInfo2JobIdMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<String>>(
 			64);
@@ -45,7 +45,7 @@ public class ContainerJobManager {
 			64);
 
 	private int corePoolSize = 5;
-	private int maxPoolSize = 20000;
+	private int maxPoolSize = 10000;
 	private long keepAliveTime = 60;
 
 	private ThreadPoolExecutor threadPoolExecutor;
@@ -157,8 +157,27 @@ public class ContainerJobManager {
 	 * 
 	 * @param jobuuid
 	 */
-	public void killJob(String jobuuid) {
-
+	public void killJob(String runClass,String method) {
+		if(StringUtils.isBlank(runClass) || StringUtils.isBlank(method)){
+			return;
+		}
+		CopyOnWriteArrayList<String> jobIdList = jobInfo2JobIdMap.get(runClass+"_"+method);
+		if(!jobIdList.isEmpty()){
+			for(String uuid:jobIdList){
+				ManagedJob job = jobId2JobMap.remove(uuid);
+				if(job == null){
+					jobIdList.remove(uuid);
+					continue;
+				}
+				Thread t = job2ThreadMap.remove(job);
+				if(t == null){
+					jobIdList.remove(uuid);
+					continue;
+				}
+				t.interrupt();
+				jobIdList.remove(uuid);
+			}
+		}
 	}
 
 	/**

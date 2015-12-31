@@ -74,10 +74,10 @@ public class FerrariRunnerFacade {
 			// 终止job
 			else if (JobConstants.VALUE_ACTION_KILL_JOB
 					.equalsIgnoreCase(command)) {
-				String uuid = jobParam.remove(JobConstants.KEY_UUID);
+				String runclass = jobParam.remove(JobConstants.KEY_RUN_CLASS);
+				String method = jobParam.remove(JobConstants.KEY_RUN_METHOD);
 				result.setDirectionType(DirectionType.KILL_JOB);
-				result.setUuid(uuid);
-				containerJobManager.killJob(uuid);
+				containerJobManager.killJob(runclass,method);
 			}
 			// 未知指令
 			else {
