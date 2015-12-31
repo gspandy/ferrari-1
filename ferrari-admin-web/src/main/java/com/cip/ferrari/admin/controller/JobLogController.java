@@ -35,12 +35,20 @@ public class JobLogController {
 	private static Logger Logger = LoggerFactory.getLogger(JobLogController.class);
 	
 	@Resource
+<<<<<<< HEAD
 	public IFerraliJobLogDao ferraliJobLogDao;
+=======
+	public IFerraliJobLogDao xxlJobLogDao;
+>>>>>>> branch 'feature1223_infra' of http://code.dianpingoa.com/shop-business/ferrari.git
 	
 	@RequestMapping("/save")
 	@ResponseBody
 	public ReturnT<String> triggerLog(int triggerLogId, String status, String msg) {
+<<<<<<< HEAD
 		FerraliJobLog log = ferraliJobLogDao.load(triggerLogId);
+=======
+		FerraliJobLog log = xxlJobLogDao.load(triggerLogId);
+>>>>>>> branch 'feature1223_infra' of http://code.dianpingoa.com/shop-business/ferrari.git
 		if (log!=null) {
 			log.setHandleTime(new Date());
 			log.setHandleStatus(status);
@@ -97,8 +105,13 @@ public class JobLogController {
 		}
 		
 		// page query
+<<<<<<< HEAD
 		List<FerraliJobLog> list = ferraliJobLogDao.pageList(start, length, jobName, triggerTimeStart, triggerTimeEnd);
 		int list_count = ferraliJobLogDao.pageListCount(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+=======
+		List<FerraliJobLog> list = xxlJobLogDao.pageList(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+		int list_count = xxlJobLogDao.pageListCount(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+>>>>>>> branch 'feature1223_infra' of http://code.dianpingoa.com/shop-business/ferrari.git
 		
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();
