@@ -16,7 +16,7 @@ import com.cip.ferrari.admin.dao.IFerraliJobLogDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:applicationcontext-*.xml")
-public class XxlJobLogTest {
+public class FerraliJobLogTest {
 	
 	@Resource
 	private IFerraliJobLogDao xxlJobLogDao;
