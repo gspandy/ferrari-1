@@ -57,7 +57,11 @@ public class FerraliJobLogDaoImpl implements IFerraliJobLogDao {
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		return sqlSessionTemplate.selectOne("FerraliJobLogMapper.pageListCount", params);
+		Integer result = sqlSessionTemplate.selectOne("FerraliJobLogMapper.pageListCount", params);
+		if(result == null){
+			return 0;
+		}
+		return result;
 	}
 	
 }
