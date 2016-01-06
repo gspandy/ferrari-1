@@ -39,7 +39,7 @@
 	</bean>
     
     <!-- scope must be "prototype" when junit -->
-    <bean id="sqlSessionTemplate"  class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">  
+    <bean id="sqlSessionTemplate"  class="org.mybatis.spring.SqlSessionTemplate">  
           <constructor-arg index="0" ref="sqlSessionFactory" />  
     </bean> 
 	
