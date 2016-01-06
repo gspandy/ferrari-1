@@ -178,6 +178,6 @@ CREATE TABLE FRI_QRTZ_TriggerLog (
   `handle_status` varchar(255) DEFAULT NULL,
   `handle_msg` varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 commit;
