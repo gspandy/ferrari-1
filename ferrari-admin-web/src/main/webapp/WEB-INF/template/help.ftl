@@ -30,8 +30,12 @@
 			<div class="callout callout-info">
 				<h4>简介：FERRARI</h4>
 				<p>基于quartz封装实现的任务集群调度管理平台.</p>
-				<p></p>
+				<p>1、简单：通过Web页面对任务进行操作，简单易上手.</p>
+				<p>2、动态：支持动态修改任务状态，暂停/恢复/执行任务，即时生效.</p>
+				<p>3、集群：任务信息持久化到db中，支持Job服务器集群(高可用)，一个任务只会在其中一台服务器上执行.</p>
             </div>
+            
+            <!--
             <div class="callout callout-default">
 				<h4>特点：</h4>
 				<p>1、简单：支持通过Web页面对任务进行CRUD操作，操作简单，一分钟上手.</p>
@@ -39,7 +43,6 @@
 				<p>3、集群：任务信息持久化到db中，支持Job服务器集群(高可用)，一个任务只会在其中一台服务器上执行.</p>
             </div>
             
-            <!--
             <div class="callout callout-default">
 				<h4>分层模型：</h4>
 				<p>1、基础：基于quartz封装调度层，通过CRONTAB自定义任务执行时间，最终执行自定义JobBean的execute方法，如需多个任务，需要开发多个JobBean实现.</p>
@@ -90,6 +93,12 @@
 				&lt/servlet-mapping>
 				</p>
 				<p>3、开始写你的任务类及方法，类名、方法、入参在新增任务时配置</p>
+            </div>
+            
+            <div class="callout callout-default">
+				<h4>联系我们</h4>
+				<p>xueli.xue@dianping.com</p>
+				<p>tengkai.yuan@dianping.com</p>
             </div>
 		</section>
 		<!-- /.content -->
