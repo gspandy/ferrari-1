@@ -20,22 +20,22 @@ public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 
 	@Override
 	public int save(FerrariJobLog ferrariJobLog) {
-		return sqlSessionTemplate.insert("FerraliJobLogMapper.save", ferrariJobLog);
+		return sqlSessionTemplate.insert("FerrariJobLogMapper.save", ferrariJobLog);
 	}
 
 	@Override
 	public FerrariJobLog load(int id) {
-		return sqlSessionTemplate.selectOne("FerraliJobLogMapper.load", id);
+		return sqlSessionTemplate.selectOne("FerrariJobLogMapper.load", id);
 	}
 
 	@Override
 	public int updateTriggerInfo(FerrariJobLog ferrariJobLog) {
-		return sqlSessionTemplate.update("FerraliJobLogMapper.updateTriggerInfo", ferrariJobLog);
+		return sqlSessionTemplate.update("FerrariJobLogMapper.updateTriggerInfo", ferrariJobLog);
 	}
 
 	@Override
 	public int updateHandleInfo(FerrariJobLog ferrariJobLog) {
-		return sqlSessionTemplate.update("FerraliJobLogMapper.updateHandleInfo", ferrariJobLog);
+		return sqlSessionTemplate.update("FerrariJobLogMapper.updateHandleInfo", ferrariJobLog);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		return sqlSessionTemplate.selectList("FerraliJobLogMapper.pageList", params);
+		return sqlSessionTemplate.selectList("FerrariJobLogMapper.pageList", params);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		Integer result = sqlSessionTemplate.selectOne("FerraliJobLogMapper.pageListCount", params);
+		Integer result = sqlSessionTemplate.selectOne("FerrariJobLogMapper.pageListCount", params);
 		if(result == null){
 			return 0;
 		}
