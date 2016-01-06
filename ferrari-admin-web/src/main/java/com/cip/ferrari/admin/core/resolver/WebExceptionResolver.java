@@ -23,7 +23,7 @@ public class WebExceptionResolver implements HandlerExceptionResolver {
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
-		logger.info("system catch exception:{}", ex);
+		logger.error("system catch exception:{}", ex);
 		
 		ModelAndView mv = new ModelAndView();
 		HandlerMethod method = (HandlerMethod)handler;
