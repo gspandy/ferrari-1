@@ -17,6 +17,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * http util to send data
@@ -24,6 +27,8 @@ import org.apache.http.util.EntityUtils;
  * @version  2015-11-28 15:30:59
  */
 public class HttpUtil {
+	
+	private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 	
 	// response param
 	public static final String status = "status";
@@ -65,7 +70,7 @@ public class HttpUtil {
 				EntityUtils.consume(entity);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("send http post exception,requrl:"+reqURL+",params:"+params,e);
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			exceptionMsg = out.toString();
@@ -77,7 +82,7 @@ public class HttpUtil {
 				try {
 					httpClient.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					//ignore
 				}
 			}
 		}

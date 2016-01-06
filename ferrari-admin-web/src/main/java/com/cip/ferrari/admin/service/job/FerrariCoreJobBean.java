@@ -22,8 +22,7 @@ import com.cip.ferrari.core.common.JobConstants;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
 /**
- * //点评ferrali定制版，适用于：ferrali-core 
- * http job bean
+ * ferrali任务版本，适用于：ferrali-core 
  * @author xuxueli 2015-12-17 18:20:34
  */
 public class FerrariCoreJobBean extends QuartzJobBean {
@@ -42,7 +41,9 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		jobLog.setJobClass(FerrariCoreJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(jobDataMap));
 		DynamicSchedulerUtil.getFerraliJobLogDao().save(jobLog);
-		logger.info(">>>>>>>>>>> xxl-job trigger start, jobLog:{}", jobLog);
+		if(logger.isInfoEnabled()){
+			logger.info("############ferrali job trigger starting..., jobLog:{}", jobLog);
+		}
 		
 		// request param
 		Map<String, String> params = new HashMap<String, String>();
@@ -56,7 +57,9 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		params.put(JobConstants.KEY_RUN_METHOD_ARGS, String.valueOf(jobDataMap.get(JobConstants.KEY_RUN_METHOD_ARGS)));
 		
 		String[] postResp = HttpUtil.post(job_url, params);
-		logger.info(">>>>>>>>>>> xxl-job trigger http response, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
+		if(logger.isInfoEnabled()){
+			logger.info("############ferrali job trigger http response, jobLog.id:{}, response:{}", jobLog.getId(), postResp);
+		}
 		
 		// parse trigger response
 		String responseMsg = postResp[0];
@@ -81,7 +84,10 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
 		}
 		DynamicSchedulerUtil.getFerraliJobLogDao().updateTriggerInfo(jobLog);
-		logger.info(">>>>>>>>>>> xxl-job trigger end, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
+		if(logger.isInfoEnabled()){
+			logger.info("############ferrali job trigger end, jobLog.id:{}", jobLog.getId());
+		}
+		
 		
     }
 	
