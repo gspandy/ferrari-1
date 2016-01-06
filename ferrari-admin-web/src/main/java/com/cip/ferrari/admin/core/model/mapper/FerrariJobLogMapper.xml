@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="FerraliJobLogMapper">
+<mapper namespace="FerrariJobLogMapper">
 	
-	<resultMap id="FerraliJobLog" type="com.cip.ferrari.admin.core.model.FerraliJobLog" >
+	<resultMap id="ferrariJobLog" type="com.cip.ferrari.admin.core.model.FerrariJobLog" >
 		<result column="id" property="id" />
 	
 	    <result column="job_name" property="jobName" />
@@ -34,7 +34,7 @@
 		t.handle_msg
 	</sql>
 	
-	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerraliJobLog" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerrariJobLog" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO FRI_QRTZ_TriggerLog (
 			`job_name`, 
 			`job_cron`, 
@@ -51,7 +51,7 @@
 		</selectKey> 
 	</insert>
 	
-	<select id="load" parameterType="java.lang.Integer" resultMap="FerraliJobLog">
+	<select id="load" parameterType="java.lang.Integer" resultMap="ferrariJobLog">
 		SELECT <include refid="Base_Column_List" />
 		FROM FRI_QRTZ_TriggerLog AS t
 		WHERE t.id = #{id}
@@ -75,7 +75,7 @@
 		WHERE `id`= #{id}
 	</update>
 	
-	<select id="pageList" parameterType="java.util.HashMap" resultMap="FerraliJobLog">
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="ferrariJobLog">
 		SELECT <include refid="Base_Column_List" />
 		FROM FRI_QRTZ_TriggerLog AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
