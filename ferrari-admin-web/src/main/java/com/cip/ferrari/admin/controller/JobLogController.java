@@ -86,6 +86,7 @@ public class JobLogController {
 	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,  
 			@RequestParam(required = false, defaultValue = "10") int length,
 			String jobName, String filterTime) {
+		Logger.info("start pagelist...");
 		// parse param
 		Date triggerTimeStart = null;
 		Date triggerTimeEnd = null;
@@ -110,6 +111,7 @@ public class JobLogController {
 	    maps.put("recordsTotal", list_count);	// 总记录数
 	    maps.put("recordsFiltered", list_count);// 过滤后的总记录数
 	    maps.put("data", list);  				// 分页列表
+	    Logger.info("end pagelist..."+maps);
 		return maps;
 	}
 	
