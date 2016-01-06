@@ -35,7 +35,7 @@
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="Wedding.Main.dataSource" />
-		<property name="mapperLocations" value="classpath*:com/cip/ferrari/admin/core/model/mapper/*.xml"/>
+		<property name="mapperLocations" value="classpath:/sqlmap/*.xml"/>
 	</bean>
     
     <!-- scope must be "prototype" when junit -->
