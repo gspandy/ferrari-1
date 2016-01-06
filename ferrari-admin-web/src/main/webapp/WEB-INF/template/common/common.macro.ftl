@@ -46,8 +46,8 @@
 <#macro commonHeader>
 	<header class="main-header">
 		<a href="${request.contextPath}/" class="logo">
-			<span class="logo-mini"><b>X</b>XL</span>
-			<span class="logo-lg"><b>任务调度</b>中心</span>
+			<span class="logo-mini"><b>FRI</b></span>
+			<span class="logo-lg"><b>任务调度中心</b></span>
 		</a>
 		<nav class="navbar navbar-static-top" role="navigation">
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"><span class="sr-only">切换导航</span></a>
@@ -64,9 +64,9 @@
 			<!-- sidebar menu: : style can be found in sidebar.less -->
 			<ul class="sidebar-menu">
 				<li class="header">常用模块</li>
-				<li class="nav-click" ><a href="${request.contextPath}/job/"><i class="fa fa-circle-o text-red"></i> <span>调度管理</span></a></li>
+				<li class="nav-click" ><a href="${request.contextPath}/job"><i class="fa fa-circle-o text-red"></i> <span>调度管理</span></a></li>
 				<li class="nav-click" ><a href="${request.contextPath}/joblog"><i class="fa fa-circle-o text-yellow"></i><span>调度日志</span></a></li>
-				<li class="nav-click" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-yellow"></i><span>使用教程</span></a></li>
+				<li class="nav-click" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-yellow"></i><span>使用说明</span></a></li>
 			</ul>
 		</section>
 		<!-- /.sidebar -->
@@ -152,15 +152,18 @@
 
 <#macro commonFooter >
 	<footer class="main-footer">
-		<div class="pull-right hidden-xs">
+		
+		Copyright &copy; 2016 Dianping
+			<!--
+			<div class="pull-right hidden-xs">
 			<b>Version</b> 1.0
 		</div>
-		<strong>Copyright &copy; 2015-2015 &nbsp;
-			<!---->
+			<strong>
 			<a href="https://github.com/xuxueli/xxl-job" target="_blank" >github</a>&nbsp;
 			<a href="http://www.cnblogs.com/xuxueli/p/5021979.html" target="_blank" >cnblog</a>.
 			
-		</strong> All rights reserved.
+		</strong> 
+		-->
 	</footer>
 </#macro>
 

@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import com.cip.ferrari.admin.core.model.FerraliJobLog;
+import com.cip.ferrari.admin.core.model.FerrariJobLog;
 import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
@@ -35,14 +35,14 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		Map<String, Object> jobDataMap = context.getMergedJobDataMap().getWrappedMap();
 		
 		// save log
-		FerraliJobLog jobLog = new FerraliJobLog();
+		FerrariJobLog jobLog = new FerrariJobLog();
 		jobLog.setJobName(context.getTrigger().getJobKey().getName());
 		jobLog.setJobCron((context.getTrigger() instanceof CronTriggerImpl)?(((CronTriggerImpl) context.getTrigger()).getCronExpression()):"");
 		jobLog.setJobClass(FerrariCoreJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(jobDataMap));
-		DynamicSchedulerUtil.getFerraliJobLogDao().save(jobLog);
+		DynamicSchedulerUtil.getFerrariJobLogDao().save(jobLog);
 		if(logger.isInfoEnabled()){
-			logger.info("############ferrali job trigger starting..., jobLog:{}", jobLog);
+			logger.info("############ferrari job trigger starting..., jobLog:{}", jobLog);
 		}
 		
 		// request param
@@ -58,7 +58,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		
 		String[] postResp = HttpUtil.post(job_url, params);
 		if(logger.isInfoEnabled()){
-			logger.info("############ferrali job trigger http response, jobLog.id:{}, response:{}", jobLog.getId(), postResp);
+			logger.info("############ferrari job trigger http response, jobLog.id:{}, response:{}", jobLog.getId(), postResp);
 		}
 		
 		// parse trigger response
@@ -83,9 +83,9 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1500) {
 			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
 		}
-		DynamicSchedulerUtil.getFerraliJobLogDao().updateTriggerInfo(jobLog);
+		DynamicSchedulerUtil.getFerrariJobLogDao().updateTriggerInfo(jobLog);
 		if(logger.isInfoEnabled()){
-			logger.info("############ferrali job trigger end, jobLog.id:{}", jobLog.getId());
+			logger.info("############ferrari job trigger end, jobLog.id:{}", jobLog.getId());
 		}
 		
 		

@@ -9,44 +9,44 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.cip.ferrari.admin.core.model.FerraliJobLog;
-import com.cip.ferrari.admin.dao.IFerraliJobLogDao;
+import com.cip.ferrari.admin.core.model.FerrariJobLog;
+import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 
 @Repository
-public class FerraliJobLogDaoImpl implements IFerraliJobLogDao {
+public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 	
 	@Resource
 	public SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public int save(FerraliJobLog xxlJobLog) {
-		return sqlSessionTemplate.insert("FerraliJobLogMapper.save", xxlJobLog);
+	public int save(FerrariJobLog ferrariJobLog) {
+		return sqlSessionTemplate.insert("FerrariJobLogMapper.save", ferrariJobLog);
 	}
 
 	@Override
-	public FerraliJobLog load(int id) {
-		return sqlSessionTemplate.selectOne("FerraliJobLogMapper.load", id);
+	public FerrariJobLog load(int id) {
+		return sqlSessionTemplate.selectOne("FerrariJobLogMapper.load", id);
 	}
 
 	@Override
-	public int updateTriggerInfo(FerraliJobLog xxlJobLog) {
-		return sqlSessionTemplate.update("FerraliJobLogMapper.updateTriggerInfo", xxlJobLog);
+	public int updateTriggerInfo(FerrariJobLog ferrariJobLog) {
+		return sqlSessionTemplate.update("FerrariJobLogMapper.updateTriggerInfo", ferrariJobLog);
 	}
 
 	@Override
-	public int updateHandleInfo(FerraliJobLog xxlJobLog) {
-		return sqlSessionTemplate.update("FerraliJobLogMapper.updateHandleInfo", xxlJobLog);
+	public int updateHandleInfo(FerrariJobLog ferrariJobLog) {
+		return sqlSessionTemplate.update("FerrariJobLogMapper.updateHandleInfo", ferrariJobLog);
 	}
 
 	@Override
-	public List<FerraliJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
+	public List<FerrariJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		return sqlSessionTemplate.selectList("FerraliJobLogMapper.pageList", params);
+		return sqlSessionTemplate.selectList("FerrariJobLogMapper.pageList", params);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class FerraliJobLogDaoImpl implements IFerraliJobLogDao {
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
-		Integer result = sqlSessionTemplate.selectOne("FerraliJobLogMapper.pageListCount", params);
+		Integer result = sqlSessionTemplate.selectOne("FerrariJobLogMapper.pageListCount", params);
 		if(result == null){
 			return 0;
 		}

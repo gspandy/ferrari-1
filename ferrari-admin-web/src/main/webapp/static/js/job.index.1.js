@@ -310,7 +310,7 @@ $(function() {
                 maxlength: 200
             },
             run_method_args : {
-            	required : true ,
+            	required : false ,
                 maxlength: 200
             }
         }, 
@@ -321,7 +321,7 @@ $(function() {
                 maxlength:"长度不应超过100位"
             },  
             cronExpression : {
-            	required :"请输入“请输入任务Corn”."  ,
+            	required :"请输入“请输入任务Cron”."  ,
                 maxlength:"长度不应超过100位"
             },  
             job_desc : {
@@ -337,7 +337,7 @@ $(function() {
                 maxlength: "长度不应超过200位"
             },
             run_method : {
-            	required : "请输入“期望执行的类”."  ,
+            	required : "请输入“期望执行的方法”."  ,
                 maxlength: "长度不应超过200位"
             },
             run_method_args : {
