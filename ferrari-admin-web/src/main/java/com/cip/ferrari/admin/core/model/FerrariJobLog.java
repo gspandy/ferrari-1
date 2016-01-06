@@ -1,12 +1,18 @@
 package com.cip.ferrari.admin.core.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * ferrari log, used to track trigger process
  * @author xuxueli  2015-12-19 23:19:09
  */
-public class FerrariJobLog {
+public class FerrariJobLog implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6112789668788997845L;
 	
 	private int id;
 	// job info
