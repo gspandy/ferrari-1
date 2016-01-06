@@ -156,9 +156,6 @@ public class JobController {
 		if (jobData.get(JobConstants.KEY_RUN_METHOD)==null || jobData.get(JobConstants.KEY_RUN_METHOD).toString().trim().length()==0) {
 			return new ReturnT<String>(500, "请输入“期望运行的方法”");
 		}
-		if (jobData.get(JobConstants.KEY_RUN_METHOD_ARGS)==null || jobData.get(JobConstants.KEY_RUN_METHOD_ARGS).toString().trim().length()==0) {
-			return new ReturnT<String>(500, "请输入“方法入参，多个参数用 ,分隔”");
-		}
 		
 		try {
 			boolean result = DynamicSchedulerUtil.addJob(triggerKeyName, cronExpression, jobClass, jobData);
