@@ -15,7 +15,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.cip.ferrari.admin.dao.impl" />
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">  
+	<bean id="Wedding.Main.dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">  
 	    <property name="driverClass" value="${c3p0.driverClass}" />  
 	    <property name="jdbcUrl" value="${c3p0.url}" />  
 	    <property name="user" value="${c3p0.user}" />  
@@ -29,7 +29,7 @@
 	    <property name="preferredTestQuery" value="SELECT 1" />
 	</bean>
 	
-	<bean id="Wedding.Main.dataSource" class="com.dianping.zebra.group.jdbc.GroupDataSource" init-method="init">
+	<bean id="Wedding.Main.dataSource0" class="com.dianping.zebra.group.jdbc.GroupDataSource" init-method="init">
         <property name="jdbcRef" value="dianpingwed"/>
     </bean>
 	
