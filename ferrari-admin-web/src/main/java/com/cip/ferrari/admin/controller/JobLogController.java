@@ -77,6 +77,8 @@ public class JobLogController {
 				if (ret!=null && ret.getCode() == ReturnT.SUCCESS.getCode()) {
 					return "ok";
 				}
+			}else{
+				Logger.warn("############ferrari job feedback deal failed because of feedback is null, result:{}", result);
 			}
 		}
 		return "fail";
