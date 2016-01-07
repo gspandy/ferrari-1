@@ -181,7 +181,7 @@ public class FeedbackHandler {
 			List<String> urlList) {
 		for (String url : urlList) {
 			try {
-				String urlTmp = "http://" + url + "/joblog/ferrarifeedback/index";
+				String urlTmp = "http://" + url + "/joblog/ferrarifeedback";
 				String resp = HttpUtil.sendHttpPost(urlTmp, httpParams);
 				if (RESPONSE_OK.equalsIgnoreCase(resp)) {
 					if (logger.isInfoEnabled()) {

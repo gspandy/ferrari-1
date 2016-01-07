@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
 import org.quartz.Job;
 import org.quartz.SchedulerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,8 @@ import com.cip.ferrari.core.common.JobConstants;
 @RequestMapping("/job")
 public class JobController {
 	
+	private static Logger Logger = LoggerFactory.getLogger(JobLogController.class);
+	
 	@RequestMapping
 	public String index(Model model) {
 		List<Map<String, Object>> jobList = DynamicSchedulerUtil.getJobList();
@@ -40,6 +44,7 @@ public class JobController {
 		return "job/index";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/add")
 	@ResponseBody
 	public ReturnT<String> add(HttpServletRequest request) {
@@ -52,7 +57,6 @@ public class JobController {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		@SuppressWarnings("unchecked")
 		Set<Map.Entry<String, String[]>> paramSet = request.getParameterMap().entrySet();
 		for (Entry<String, String[]> param : paramSet) {
 			if (param.getKey().equals("triggerKeyName")) {
@@ -71,10 +75,10 @@ public class JobController {
 		
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
-			return new ReturnT<String>(500, "“任务corn”不合法");
+			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
 		
 		// jobData
@@ -103,7 +107,12 @@ public class JobController {
 		return ReturnT.FAIL;
 	}
 	
-	// 点评ferrali定制版
+	/**ferrali定制版
+	 * 新增一个任务
+	 * @param request
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/addFerrari")
 	@ResponseBody
 	public ReturnT<String> addFerrari(HttpServletRequest request) {
@@ -114,9 +123,7 @@ public class JobController {
 		try {
 			request.setCharacterEncoding("utf-8");
 		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
 		}
-		@SuppressWarnings("unchecked")
 		Set<Map.Entry<String, String[]>> paramSet = request.getParameterMap().entrySet();
 		for (Entry<String, String[]> param : paramSet) {
 			if (param.getKey().equals("triggerKeyName")) {
@@ -135,10 +142,10 @@ public class JobController {
 		
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
-			return new ReturnT<String>(500, "“任务corn”不合法");
+			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
 		// jobClass
 		Class<? extends Job> jobClass = FerrariCoreJobBean.class;
@@ -164,11 +171,17 @@ public class JobController {
 			}
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("新增任务失败,triggerKeyName="+triggerKeyName+",jobData="+jobData,e);
 		}
 		return ReturnT.FAIL;
 	}
 	
+	/**
+	 * 更新任务执行时间
+	 * @param triggerKeyName
+	 * @param cronExpression
+	 * @return
+	 */
 	@RequestMapping("/reschedule")
 	@ResponseBody
 	public ReturnT<String> reschedule(String triggerKeyName, String cronExpression) {
@@ -178,7 +191,7 @@ public class JobController {
 		}
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
 			return new ReturnT<String>(500, "“任务corn”不合法");
@@ -187,11 +200,16 @@ public class JobController {
 			DynamicSchedulerUtil.rescheduleJob(triggerKeyName, cronExpression);
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("更新任务执行时间失败,triggerKeyName="+triggerKeyName,e);;
 		}
 		return ReturnT.FAIL;
 	}
 	
+	/**
+	 * 删除任务
+	 * @param triggerKeyName
+	 * @return
+	 */
 	@RequestMapping("/remove")
 	@ResponseBody
 	public ReturnT<String> remove(String triggerKeyName) {
@@ -199,11 +217,16 @@ public class JobController {
 			DynamicSchedulerUtil.removeJob(triggerKeyName);
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("删除任务失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
 		}
 	}
 	
+	/**
+	 * 暂停任务调度
+	 * @param triggerKeyName
+	 * @return
+	 */
 	@RequestMapping("/pause")
 	@ResponseBody
 	public ReturnT<String> pause(String triggerKeyName) {
@@ -211,11 +234,16 @@ public class JobController {
 			DynamicSchedulerUtil.pauseJob(triggerKeyName);
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("暂停任务调度失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
 		}
 	}
 	
+	/**
+	 * 恢复任务调度
+	 * @param triggerKeyName
+	 * @return
+	 */
 	@RequestMapping("/resume")
 	@ResponseBody
 	public ReturnT<String> resume(String triggerKeyName) {
@@ -223,11 +251,16 @@ public class JobController {
 			DynamicSchedulerUtil.resumeJob(triggerKeyName);
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("恢复任务调度失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
 		}
 	}
 	
+	/**
+	 * 手动触发一次任务
+	 * @param triggerKeyName
+	 * @return
+	 */
 	@RequestMapping("/trigger")
 	@ResponseBody
 	public ReturnT<String> triggerJob(String triggerKeyName) {
@@ -235,7 +268,7 @@ public class JobController {
 			DynamicSchedulerUtil.triggerJob(triggerKeyName);
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			Logger.error("手动触发执行任务失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
 		}
 	}
