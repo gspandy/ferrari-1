@@ -1,6 +1,7 @@
 package com.cip.ferrari.admin.controller;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cip.ferrari.admin.core.model.ReturnT;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
+import com.cip.ferrari.admin.core.model.ReturnT;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
 import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
@@ -86,6 +87,15 @@ public class JobLogController {
 	
 	@RequestMapping
 	public String index(Model model, String jobName, String filterTime) {
+		
+		// 默认filterTime
+		Calendar todayz = Calendar.getInstance();
+		todayz.set(Calendar.HOUR_OF_DAY, 0);
+		todayz.set(Calendar.MINUTE, 0);
+		todayz.set(Calendar.SECOND, 0);
+		model.addAttribute("triggerTimeStart", todayz.getTime());
+		model.addAttribute("triggerTimeEnd", Calendar.getInstance().getTime());
+		
 		model.addAttribute("jobName", jobName);
 		model.addAttribute("filterTime", filterTime);
 		return "joblog/index";

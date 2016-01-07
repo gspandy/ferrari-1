@@ -12,7 +12,6 @@ $(function() {
                 d.jobName = $('#jobName').val()
             }
 	    },
-	    "scrollX": true,
 	    "columns": [
 	                { "data": 'id', "bSortable": false, "visible" : false},
 	                { "data": 'jobName', "bSortable": false},
@@ -27,7 +26,11 @@ $(function() {
 	                	}
 	                },
 	                { "data": 'triggerStatus', "bSortable": false},
-	                { "data": 'triggerMsg',"bSortable": false},
+	                { "data": 'triggerMsg',"bSortable": false,
+	                	"render": function ( data, type, row ) {
+	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">调度日志</a>':"无";
+	                	}
+	                },
 	                { 
 	                	"data": 'handleTime',
 	                	"bSortable": false,
@@ -36,7 +39,10 @@ $(function() {
 	                	}
 	                },
 	                { "data": 'handleStatus',"bSortable": false},
-	                { "data": 'handleMsg' , "bSortable": false}
+	                { "data": 'handleMsg' , "bSortable": false,
+	                	"render": function ( data, type, row ) {
+	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">执行日志</a>':"无";
+	                	}}
 	            ],
 	    "searching": false,
 	    "ordering": true,
@@ -66,11 +72,15 @@ $(function() {
 		}
 	});
 	
-	// 过滤时间
+	$('#joblog_list').on('click', '.logTips', function(){
+		var title = $(this).attr('title');
+		ComAlert.show(2, title);
+	});
+	
 	$('#filterTime').daterangepicker({
-		timePicker: true, 			//是否显示小时和分钟
-		timePickerIncrement: 10, 	//时间的增量，单位为分钟
-		timePicker12Hour : false,	//是否使用12小时制来显示时间
+		timePicker: true,
+		timePickerIncrement: 10,
+		timePicker12Hour : false,
 		format: 'YYYY-MM-DD HH:mm:ss',
 		separator : ' - ',
 		ranges : {
@@ -80,7 +90,7 @@ $(function() {
             '最近7日': [moment().subtract('days', 6), moment()],
             '最近30日': [moment().subtract('days', 29), moment()]
         },
-        opens : 'right', //日期选择框的弹出位置
+        opens : 'right',
         locale : {
         	customRangeLabel : '自定义',
             applyLabel : '确定',
@@ -93,7 +103,6 @@ $(function() {
         }
 	});
 	
-	// 搜索按钮
 	$('#searchBtn').on('click', function(){
 		logTable.fnDraw();
 	});
