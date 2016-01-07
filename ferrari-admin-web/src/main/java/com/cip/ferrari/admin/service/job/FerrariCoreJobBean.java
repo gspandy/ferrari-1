@@ -13,11 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
-import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
+import com.cip.ferrari.admin.core.util.HostUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
-import com.cip.ferrari.admin.core.util.PropertiesUtil;
 import com.cip.ferrari.core.common.JobConstants;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
@@ -27,6 +26,8 @@ import com.cip.ferrari.core.job.result.FerrariFeedback;
  */
 public class FerrariCoreJobBean extends QuartzJobBean {
 	private static Logger logger = LoggerFactory.getLogger(FerrariCoreJobBean.class);
+	
+	private final String PORT = "8080";
 	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
@@ -49,7 +50,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		Map<String, String> params = new HashMap<String, String>();
 		String job_url = JobConstants.KEY_JOB_ADDRESS_TEMPLATE.replace("{job_address}", String.valueOf(jobDataMap.get(JobConstants.KEY_JOB_ADDRESS)));
 		params.put(JobConstants.KEY_UUID, jobLog.getId()+"");
-		params.put(JobConstants.KEY_RESULT_URL_LIST, PropertiesUtil.getString(Constantz.triggerLogUrl));
+		params.put(JobConstants.KEY_RESULT_URL_LIST, HostUtil.getIP()+":"+PORT);
 		params.put(JobConstants.KEY_ACTION, JobConstants.VALUE_ACTION_RUN_JOB);
 		params.put(JobConstants.KEY_JOB_NAME, triggerKey);
 		params.put(JobConstants.KEY_RUN_CLASS, String.valueOf(jobDataMap.get(JobConstants.KEY_RUN_CLASS)));
