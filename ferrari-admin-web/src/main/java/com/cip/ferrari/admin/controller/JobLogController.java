@@ -32,6 +32,7 @@ import com.cip.ferrari.core.job.result.FerrariFeedback;
 @Controller
 @RequestMapping("/joblog")
 public class JobLogController {
+	
 	private static Logger Logger = LoggerFactory.getLogger(JobLogController.class);
 	
 	@Resource
@@ -51,21 +52,28 @@ public class JobLogController {
 			}
 			
 			ferraliJobLogDao.updateHandleInfo(log);
-			Logger.info("JobLogController.triggerLog success, triggerLogId:{}, status:{}, msg:{}", triggerLogId, status, msg);
+			Logger.info("JobLogController save success, triggerLogId:{}, status:{}, msg:{}", triggerLogId, status, msg);
 			return ReturnT.SUCCESS;
 		}
 		return ReturnT.FAIL;
 	}
 	
-	// 点评ferrali定制接口
+	//ferrari定制接口
 	@RequestMapping("/ferrarifeedback")
 	@ResponseBody
 	public String ferrarifeedback(String result) {
-		Logger.info("JobLogController.ferrarifeedback, result:{}", result);
-		if (StringUtils.isNotBlank(result)) {
-			FerrariFeedback resultBean = JacksonUtil.readValue(result, FerrariFeedback.class);
-			if (resultBean!=null) {
-				ReturnT<String> ret = this.triggerLog(Integer.valueOf(resultBean.getUuid()), resultBean.isStatus()?HttpUtil.SUCCESS:HttpUtil.FAIL, resultBean.getErrormsg());
+		if(Logger.isInfoEnabled()){
+			Logger.info("############ferrari job feedback, result:{}", result);
+		}
+		if (!StringUtils.isBlank(result)) {
+			FerrariFeedback feedback = JacksonUtil.readValue(result, FerrariFeedback.class);
+			if (feedback != null) {
+				ReturnT<String> ret = null;
+				if(feedback.isStatus()){
+					ret = this.triggerLog(Integer.valueOf(feedback.getUuid()), HttpUtil.SUCCESS, feedback.getContent());
+				}else{
+					ret = this.triggerLog(Integer.valueOf(feedback.getUuid()), HttpUtil.FAIL, feedback.getErrormsg());
+				}
 				if (ret!=null && ret.getCode() == ReturnT.SUCCESS.getCode()) {
 					return "ok";
 				}

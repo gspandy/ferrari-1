@@ -40,6 +40,7 @@ public class JobController {
 		return "job/index";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/add")
 	@ResponseBody
 	public ReturnT<String> add(HttpServletRequest request) {
@@ -52,7 +53,6 @@ public class JobController {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		@SuppressWarnings("unchecked")
 		Set<Map.Entry<String, String[]>> paramSet = request.getParameterMap().entrySet();
 		for (Entry<String, String[]> param : paramSet) {
 			if (param.getKey().equals("triggerKeyName")) {
@@ -71,10 +71,10 @@ public class JobController {
 		
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
-			return new ReturnT<String>(500, "“任务corn”不合法");
+			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
 		
 		// jobData
@@ -103,7 +103,7 @@ public class JobController {
 		return ReturnT.FAIL;
 	}
 	
-	// 点评ferrali定制版
+	//ferrali定制版
 	@RequestMapping("/addFerrari")
 	@ResponseBody
 	public ReturnT<String> addFerrari(HttpServletRequest request) {
@@ -135,10 +135,10 @@ public class JobController {
 		
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
-			return new ReturnT<String>(500, "“任务corn”不合法");
+			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
 		// jobClass
 		Class<? extends Job> jobClass = FerrariCoreJobBean.class;
@@ -178,7 +178,7 @@ public class JobController {
 		}
 		// cronExpression
 		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务corn”");
+			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
 			return new ReturnT<String>(500, "“任务corn”不合法");

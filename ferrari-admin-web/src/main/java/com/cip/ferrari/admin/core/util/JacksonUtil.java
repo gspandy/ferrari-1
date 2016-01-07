@@ -20,7 +20,9 @@ import org.codehaus.jackson.type.TypeReference;
  * @author xuxueli 2015-9-25 18:02:56
  */
 public class JacksonUtil {
+	
     private final static ObjectMapper objectMapper = new ObjectMapper();
+    
     public static ObjectMapper getInstance() {
         return objectMapper;
     }
