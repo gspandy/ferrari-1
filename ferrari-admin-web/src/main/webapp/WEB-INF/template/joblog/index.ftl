@@ -63,16 +63,16 @@
 				                <thead>
 					            	<tr>
 					                	<th>id</th>
-					                  	<th>jobName</th>
-					                  	<th>jobCron</th>
-					                  	<th>jobClass</th>
-					                  	<th>jobData</th>
-					                  	<th>triggerTime</th>
-					                  	<th>triggerStatus</th>
-					                  	<th>triggerMsg</th>
-					                  	<th>handleTime</th>
-					                  	<th>handleStatus</th>
-					                  	<th>handleMsg</th>
+					                  	<th class="jobName" >任务Key</th>
+					                  	<th class="jobCron" >任务Corn</th>
+					                  	<th class="jobClass" >任务类型</th>
+					                  	<th class="jobData" >任务数据</th>
+					                  	<th class="triggerTime" >调度时间</th>
+					                  	<th class="triggerStatus" >调度状态</th>
+					                  	<th class="triggerMsg" >调度结果</th>
+					                  	<th class="handleTime" >执行时间</th>
+					                  	<th class="handleStatus" >执行状态</th>
+					                  	<th class="handleMsg" >执行结果</th>
 					                </tr>
 				                </thead>
 				                <tbody></tbody>

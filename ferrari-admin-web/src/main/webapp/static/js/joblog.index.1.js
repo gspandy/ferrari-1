@@ -28,7 +28,7 @@ $(function() {
 	                { "data": 'triggerStatus', "bSortable": false},
 	                { "data": 'triggerMsg',"bSortable": false,
 	                	"render": function ( data, type, row ) {
-	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">调度日志</a>':"无";
+	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">调度结果</a>':"无";
 	                	}
 	                },
 	                { 
@@ -41,8 +41,9 @@ $(function() {
 	                { "data": 'handleStatus',"bSortable": false},
 	                { "data": 'handleMsg' , "bSortable": false,
 	                	"render": function ( data, type, row ) {
-	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">执行日志</a>':"无";
-	                	}}
+	                		return data?'<a href="javascript:;" class="logTips" title="'+ data +'">执行结果</a>':"无";
+	                	}
+	                }
 	            ],
 	    "searching": false,
 	    "ordering": true,
