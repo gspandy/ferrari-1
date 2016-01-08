@@ -75,7 +75,7 @@ $(function() {
 	
 	$('#joblog_list').on('click', '.logTips', function(){
 		var title = $(this).attr('title');
-		ComAlert.show(2, title);
+		ComAlertTec.show(title);
 	});
 	
 	$('#filterTime').daterangepicker({
