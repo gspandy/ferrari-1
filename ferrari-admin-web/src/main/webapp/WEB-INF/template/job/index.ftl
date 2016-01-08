@@ -131,8 +131,8 @@
 						<div class="col-sm-9"><input type="text" class="form-control" name="triggerKeyName" placeholder="请输入任务Key(全局唯一标识)" minlength="4" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务Crontab</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Crontab表达式[允许修改]" maxlength="100" ></div>
+						<label for="lastname" class="col-sm-3 control-label">任务Cron</label>
+						<div class="col-sm-9"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron表达式[允许修改]" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
 						<label for="lastname" class="col-sm-3 control-label">任务描述</label>
@@ -173,7 +173,7 @@
 						<div class="col-sm-9"><input type="text" class="form-control" name="triggerKeyName" placeholder="请输入任务Key[不支持修改,全局唯一标识]" minlength="4" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务Crontab</label>
+						<label for="lastname" class="col-sm-3 control-label">任务Cron</label>
 						<div class="col-sm-9"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron[允许修改]" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
