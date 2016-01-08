@@ -28,8 +28,8 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="callout callout-info">
-				<h4>简介：FERRARI</h4>
-				<p>基于quartz封装实现的任务集群调度管理平台.</p>
+				<h4>简介</h4>
+				<p>Ferrari是一种云调度集群管理平台，基于quartz实现定时调度。ferrari本身不执行任何任务，只是进行触发任务执行(通过http远程触发).</p>
 				<p>1、简单：通过Web页面对任务进行操作，简单易上手.</p>
 				<p>2、动态：支持动态修改任务状态，暂停/恢复/执行任务，即时生效.</p>
 				<p>3、集群：任务信息持久化到db中，支持Job服务器集群(高可用)，一个任务只会在其中一台服务器上执行.</p>
@@ -69,6 +69,16 @@
 				<p>5、期望执行的类名【必填】：任务class名，包含package.</p>
 				<p>6、期望执行的方法【必填】：方法名.</p>
 				<p>7、方法入参【选填】：方法入参，多个参数用,分隔.</p>
+            </div>
+            
+            <div class="callout callout-default">
+				<h4>调度列表属性说明</h4>
+				<p>1、状态：SUSPEND->暂停调度中;SCHEDELED->调度中.</p>
+				<p>2、操作[恢复]：将暂停调度中的任务恢复到调度中.</p>
+				<p>3、操作[暂停]：将调度中的任务暂停调度.</p>
+				<p>4、操作[执行]：手动触发一次任务执行.</p>
+				<p>5、操作[删除]：删除此任务调度.</p>
+				<p>6、操作[更新cron]：更改任务调度时间.</p>
             </div>
             
             <div class="callout callout-default">
