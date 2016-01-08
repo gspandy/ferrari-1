@@ -21,7 +21,7 @@ import com.cip.ferrari.core.common.JobConstants;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
 /**
- * ferrali任务版本，适用于：ferrali-core 
+ * ferrari任务版本，适用于：ferrari-core 
  * @author xuxueli 2015-12-17 18:20:34
  */
 public class FerrariCoreJobBean extends QuartzJobBean {
@@ -32,7 +32,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
-		String triggerKey = context.getTrigger().getJobKey().getName();
+		String triggerKeyName = context.getTrigger().getJobKey().getName();
 		Map<String, Object> jobDataMap = context.getMergedJobDataMap().getWrappedMap();
 		
 		// save log
@@ -52,7 +52,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		params.put(JobConstants.KEY_UUID, jobLog.getId()+"");
 		params.put(JobConstants.KEY_RESULT_URL_LIST, HostUtil.getIP()+":"+PORT);
 		params.put(JobConstants.KEY_ACTION, JobConstants.VALUE_ACTION_RUN_JOB);
-		params.put(JobConstants.KEY_JOB_NAME, triggerKey);
+		params.put(JobConstants.KEY_JOB_NAME, triggerKeyName);
 		params.put(JobConstants.KEY_RUN_CLASS, String.valueOf(jobDataMap.get(JobConstants.KEY_RUN_CLASS)));
 		params.put(JobConstants.KEY_RUN_METHOD, String.valueOf(jobDataMap.get(JobConstants.KEY_RUN_METHOD)));
 		params.put(JobConstants.KEY_RUN_METHOD_ARGS, String.valueOf(jobDataMap.get(JobConstants.KEY_RUN_METHOD_ARGS)));
