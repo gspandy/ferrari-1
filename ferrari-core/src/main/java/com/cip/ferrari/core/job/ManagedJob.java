@@ -130,7 +130,7 @@ public class ManagedJob implements Runnable {
 			String runMethodArgs = jobParam.get(JobConstants.KEY_RUN_METHOD_ARGS);
 			
 			if(!Modifier.isStatic(runMethod.getModifiers())){//非静态方法才调用
-				task = runClass.newInstance();
+				task = runClass.newInstance();//保证多例
 				
 				Class<?>[] parameterTypes = runMethod.getParameterTypes();
 
