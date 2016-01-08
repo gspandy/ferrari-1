@@ -70,12 +70,16 @@
 				<p>6、期望执行的方法【必填】：方法名.</p>
 				<p>7、方法入参【选填】：方法入参，多个参数用,分隔.</p>
 				<p>备注:
-					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quartz格式: [秒] [分] [小时] [日] [月] [周] [年] 
-					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中，* : 所有值; ? : 不定值; - : 区间值
+					<p style="padding-left:30px;">Quartz格式: [秒] [分] [小时] [日] [月] [周] [年] <a href="http://www.jeasyuicn.com/cron/" target="_blank" style="color:rgb(15, 163, 221);">Quartz Cron在线工具</a></p>
+					<p style="padding-left:30px;">* : 所有值;</p>
+					<p style="padding-left:30px;">? : 不定值,即不关系它为何值;</p>
+					<p style="padding-left:30px;">- : 区间值,表示一个指定的范围;</p>
+					<p style="padding-left:30px;">, : 表示附加一个可能值;</p>
+					<p style="padding-left:30px;">/ : 符号前表示开始时间，符号后表示每次递增的值;</p>
 					<br/>样例:
-					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 15 10 * * ? 每天10点15分触发
-					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 * 14 * * ? 每天下午的 2点到2点59分每分触发
-					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 0/5 14 * * ? 每天下午的 2点到2点59分(整点开始，每隔5分触发)
+					<p style="padding-left:30px;">0 15 10 * * ? 每天10点15分触发</p>
+					<p style="padding-left:30px;">0 * 14 * * ? 每天下午的 2点到2点59分每分触发</p>
+					<p style="padding-left:30px;">0 0/5 14 * * ? 每天下午的 2点到2点59分(整点开始，每隔5分触发)</p>
 				</p>
             </div>
             
