@@ -57,10 +57,15 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 	@Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(scheduler, "quartz scheduler is null");
-        logger.info(">>>>>>>>> init quartz scheduler success.[{}]", scheduler);
+        if(logger.isInfoEnabled()){
+        	logger.info("###### init quartz scheduler success.[{}]", scheduler);
+        }
     }
 	
-	// getJobKeys
+	/** getJobKeys
+	 * 
+	 * @return
+	 */
 	public static List<Map<String, Object>> getJobList(){
 		List<Map<String, Object>> jobList = new ArrayList<Map<String,Object>>();
 		
@@ -70,7 +75,7 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 			}
 			String groupName = scheduler.getJobGroupNames().get(0);
 			Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName));
-			if (jobKeys!=null && jobKeys.size()>0) {
+			if (jobKeys !=null && jobKeys.size() > 0) {
 				for (JobKey jobKey : jobKeys) {
 			        TriggerKey triggerKey = TriggerKey.triggerKey(jobKey.getName(), Scheduler.DEFAULT_GROUP);
 			        Trigger trigger = scheduler.getTrigger(triggerKey);
@@ -86,13 +91,21 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 			}
 			
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			logger.error("######query joblist exception.", e);
 			return null;
 		}
 		return jobList;
 	}
 
-	// addJob 新增
+	/**
+	 * 新增一个job
+	 * @param triggerKeyName
+	 * @param cronExpression
+	 * @param jobClass
+	 * @param jobData
+	 * @return
+	 * @throws SchedulerException
+	 */
     public static boolean addJob(String triggerKeyName, String cronExpression, Class<? extends Job> jobClass, Map<String, Object> jobData) throws SchedulerException {
     	// TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
@@ -100,8 +113,8 @@ public final class DynamicSchedulerUtil implements InitializingBean {
         
         // TriggerKey valid if_exists
         if (scheduler.checkExists(triggerKey)) {
-            Trigger trigger = scheduler.getTrigger(triggerKey);
-            logger.info(">>>>>>>>> Already exist trigger [" + trigger + "] by key [" + triggerKey + "] in Scheduler");
+//            Trigger trigger = scheduler.getTrigger(triggerKey);
+            logger.warn("###### Already exist trigger with key [" + triggerKey + "] in quartz scheduler");
             return false;
         }
         
@@ -111,7 +124,7 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 
         // JobDetail : jobClass
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(triggerKeyName, group).build();
-        if (jobData!=null && jobData.size() > 0) {
+        if (jobData !=null && jobData.size() > 0) {
         	JobDataMap jobDataMap = jobDetail.getJobDataMap();
         	jobDataMap.putAll(jobData);	// JobExecutionContext context.getMergedJobDataMap().get("mailGuid");
 		}
@@ -119,94 +132,118 @@ public final class DynamicSchedulerUtil implements InitializingBean {
         // schedule : jobDetail + cronTrigger
         Date date = scheduler.scheduleJob(jobDetail, cronTrigger);
 
-        logger.info(">>>>>>>>>>> addJob success, jobDetail:{}, cronTrigger:{}, date:{}", jobDetail, cronTrigger, date);
+        if(logger.isInfoEnabled()){
+        	logger.info("###### addJob success, jobDetail:{}, cronTrigger:{}, date:{}", jobDetail, cronTrigger, date);
+        }
+        
         return true;
     }
     
-    // reschedule 重置cron
+    /** reschedule 重置cron
+     * 
+     * @param triggerKeyName
+     * @param cronExpression
+     * @return
+     * @throws SchedulerException
+     */
     public static boolean rescheduleJob(String triggerKeyName, String cronExpression) throws SchedulerException {
         // TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
-        boolean result = false;
         if (scheduler.checkExists(triggerKey)) {
             // CronTrigger : TriggerKey + cronExpression
             CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
             CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
             
             Date date = scheduler.rescheduleJob(triggerKey, cronTrigger);
-            result = true;
-            logger.info(">>>>>>>>>>> resumeJob success, triggerKey:{}, cronExpression:{}, date:{}", triggerKey, cronExpression, date);
+            if(date != null){
+            	return true;
+            }
+            return false;
         } else {
-        	logger.info(">>>>>>>>>>> resumeJob fail, triggerKey:{}, cronExpression:{}", triggerKey, cronExpression);
+        	logger.warn("######scheduler.rescheduleJob, triggerKey not exist,key="+triggerKeyName);
         }
-        return result;
+        return false;
     }
     
-    // unscheduleJob 删除
+    /**unscheduleJob 删除
+     * 
+     * @param triggerKeyName
+     * @return
+     * @throws SchedulerException
+     */
     public static boolean removeJob(String triggerKeyName) throws SchedulerException {
     	// TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
-        boolean result = false;
+        boolean result = true;
         if (scheduler.checkExists(triggerKey)) {
             result = scheduler.unscheduleJob(triggerKey);
         }
-        logger.info(">>>>>>>>>>> removeJob, triggerKey:{}, result [{}]", triggerKey, result);
         return result;
     }
 
-    // Pause 暂停
+    /** Pause 暂停
+     * 
+     * @param triggerKeyName
+     * @return
+     * @throws SchedulerException
+     */
     public static boolean pauseJob(String triggerKeyName) throws SchedulerException {
     	// TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
-        boolean result = false;
+        boolean result = true;
         if (scheduler.checkExists(triggerKey)) {
             scheduler.pauseTrigger(triggerKey);
-            result = true;
-            logger.info(">>>>>>>>>>> pauseJob success, triggerKey:{}", triggerKey);
-        } else {
-        	logger.info(">>>>>>>>>>> pauseJob fail, triggerKey:{}", triggerKey);
+            return true;
+        }else{
+        	logger.warn("######scheduler.pauseTrigger, triggerKey not exist,key="+triggerKeyName);
         }
         return result;
     }
     
-    // resume 重启 
+    /** resume 重启 
+     * 
+     * @param triggerKeyName
+     * @return
+     * @throws SchedulerException
+     */
     public static boolean resumeJob(String triggerKeyName) throws SchedulerException {
         // TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
-        boolean result = false;
         if (scheduler.checkExists(triggerKey)) {
             scheduler.resumeTrigger(triggerKey);
-            result = true;
-            logger.info(">>>>>>>>>>> resumeJob success, triggerKey:{}", triggerKey);
+            return true;
         } else {
-        	logger.info(">>>>>>>>>>> resumeJob fail, triggerKey:{}", triggerKey);
+        	logger.warn("######scheduler.resumeTrigger, triggerKey not exist,key="+triggerKeyName);
         }
-        return result;
+        return false;
     }
     
-    // run 执行一次 
+    /** run 执行一次 
+     * 
+     * @param triggerKeyName
+     * @return
+     * @throws SchedulerException
+     */
     public static boolean triggerJob(String triggerKeyName) throws SchedulerException {
         // TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         JobKey jobKey = JobKey.jobKey(triggerKeyName, group);
         
-        boolean result = false;
         if (scheduler.checkExists(jobKey)) {
             scheduler.triggerJob(jobKey);
-            result = true;
-            logger.info(">>>>>>>>>>> runJob success, jobKey:{}", jobKey);
+            return true;
         } else {
-        	logger.info(">>>>>>>>>>> runJob fail, jobKey:{}", jobKey);
+        	logger.warn("######scheduler.triggerJob, triggerKey not exist,key="+triggerKeyName);
         }
-        return result;
+        return false;
     }
 
 }

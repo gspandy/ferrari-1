@@ -194,11 +194,14 @@ public class JobController {
 			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
-			return new ReturnT<String>(500, "“任务corn”不合法");
+			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
 		try {
-			DynamicSchedulerUtil.rescheduleJob(triggerKeyName, cronExpression);
-			return ReturnT.SUCCESS;
+			boolean result = DynamicSchedulerUtil.rescheduleJob(triggerKeyName, cronExpression);
+			if(result){
+				return ReturnT.SUCCESS;
+			}
+			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("更新任务执行时间失败,triggerKeyName="+triggerKeyName,e);;
 		}
@@ -214,8 +217,11 @@ public class JobController {
 	@ResponseBody
 	public ReturnT<String> remove(String triggerKeyName) {
 		try {
-			DynamicSchedulerUtil.removeJob(triggerKeyName);
-			return ReturnT.SUCCESS;
+			boolean result = DynamicSchedulerUtil.removeJob(triggerKeyName);
+			if(result){
+				return ReturnT.SUCCESS;
+			}
+			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("删除任务失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
@@ -231,8 +237,11 @@ public class JobController {
 	@ResponseBody
 	public ReturnT<String> pause(String triggerKeyName) {
 		try {
-			DynamicSchedulerUtil.pauseJob(triggerKeyName);
-			return ReturnT.SUCCESS;
+			boolean result = DynamicSchedulerUtil.pauseJob(triggerKeyName);
+			if(result){
+				return ReturnT.SUCCESS;
+			}
+			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("暂停任务调度失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
@@ -248,8 +257,11 @@ public class JobController {
 	@ResponseBody
 	public ReturnT<String> resume(String triggerKeyName) {
 		try {
-			DynamicSchedulerUtil.resumeJob(triggerKeyName);
-			return ReturnT.SUCCESS;
+			boolean result = DynamicSchedulerUtil.resumeJob(triggerKeyName);
+			if(result){
+				return ReturnT.SUCCESS;
+			}
+			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("恢复任务调度失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
@@ -265,8 +277,11 @@ public class JobController {
 	@ResponseBody
 	public ReturnT<String> triggerJob(String triggerKeyName) {
 		try {
-			DynamicSchedulerUtil.triggerJob(triggerKeyName);
-			return ReturnT.SUCCESS;
+			boolean result = DynamicSchedulerUtil.triggerJob(triggerKeyName);
+			if(result){
+				return ReturnT.SUCCESS;
+			}
+			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("手动触发执行任务失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;
