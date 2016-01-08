@@ -45,7 +45,7 @@
             
             <div class="callout callout-default">
 				<h4>分层模型：</h4>
-				<p>1、基础：基于quartz封装调度层，通过CRONTAB自定义任务执行时间，最终执行自定义JobBean的execute方法，如需多个任务，需要开发多个JobBean实现.</p>
+				<p>1、基础：基于quartz封装调度层，通过CRON自定义任务执行时间，最终执行自定义JobBean的execute方法，如需多个任务，需要开发多个JobBean实现.</p>
 				<p>2、分层：上述基础调度模型存在一定局限，调度层和任务层耦合，当新任务上线势必影响任务的正常调度，因此规划将调度系统分层为：调度层 + 任务层 + 通讯层.</p>
 				<p>
 				 	<div class="row">
@@ -63,12 +63,20 @@
             <div class="callout callout-default">
 				<h4>新增任务属性说明</h4>
 				<p>1、任务Key【必填】：任务名称的全局唯一标识.</p>
-				<p>2、任务Crontab【必填】：任务执行的时间表达式.</p>
+				<p>2、任务Cron【必填】：任务执行的时间表达式(quartz格式).</p>
 				<p>3、任务描述【必填】：任务的简述.</p>
 				<p>4、任务机器【必填】：任务所在机器的ip地址，比如127.0.0.1:8080.</p>
 				<p>5、期望执行的类名【必填】：任务class名，包含package.</p>
 				<p>6、期望执行的方法【必填】：方法名.</p>
 				<p>7、方法入参【选填】：方法入参，多个参数用,分隔.</p>
+				<p>备注:
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quartz格式: [秒] [分] [小时] [日] [月] [周] [年] 
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中，* : 所有值; ? : 不定值; - : 区间值
+					<br/>样例:
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 15 10 * * ? 每天10点15分触发
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 * 14 * * ? 每天下午的 2点到2点59分每分触发
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 0/5 14 * * ? 每天下午的 2点到2点59分(整点开始，每隔5分触发)
+				</p>
             </div>
             
             <div class="callout callout-default">
