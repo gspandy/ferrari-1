@@ -113,7 +113,7 @@ public class JobLogController {
 			String[] temp = filterTime.split(" - ");
 			if (temp!=null && temp.length == 2) {
 				try {
-					triggerTimeEnd = DateUtils.parseDate(temp[0], new String[]{"yyyy-MM-dd HH:mm:ss"});
+					triggerTimeStart = DateUtils.parseDate(temp[0], new String[]{"yyyy-MM-dd HH:mm:ss"});
 					triggerTimeEnd = DateUtils.parseDate(temp[1], new String[]{"yyyy-MM-dd HH:mm:ss"});
 				} catch (ParseException e) {
 					e.printStackTrace();
