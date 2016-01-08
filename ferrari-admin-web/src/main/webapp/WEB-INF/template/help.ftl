@@ -30,9 +30,9 @@
 			<div class="callout callout-info">
 				<h4>简介</h4>
 				<p>Ferrari是一种云调度集群管理平台，基于quartz实现定时调度。ferrari本身不执行任何任务，只是进行触发任务执行(通过http远程触发).</p>
-				<p>1、简单：通过Web页面对任务进行操作，简单易上手.</p>
-				<p>2、动态：支持动态修改任务状态，暂停/恢复/执行任务，即时生效.</p>
-				<p>3、集群：任务信息持久化到db中，支持Job服务器集群(高可用)，一个任务只会在其中一台服务器上执行.</p>
+				<p>1、简单：通过Web页面对任务进行操作，简单易上手</p>
+				<p>2、动态：支持动态修改任务状态，暂停/恢复/执行任务，即时生效</p>
+				<p>3、集群：任务信息持久化到db中，支持Job服务器集群(高可用)，一个任务只会在其中一台服务器上执行</p>
             </div>
             
             <!--
@@ -62,13 +62,13 @@
             
             <div class="callout callout-default">
 				<h4>新增任务属性说明</h4>
-				<p>1、任务Key【必填】：任务名称的全局唯一标识.</p>
-				<p>2、任务Cron【必填】：任务执行的时间表达式(quartz格式).</p>
-				<p>3、任务描述【必填】：任务的简述.</p>
-				<p>4、任务机器【必填】：任务所在机器的ip地址，比如127.0.0.1:8080.</p>
-				<p>5、期望执行的类名【必填】：任务class名，包含package.</p>
-				<p>6、期望执行的方法【必填】：方法名.</p>
-				<p>7、方法入参【选填】：方法入参，多个参数用,分隔.</p>
+				<p>1、任务Key【必填】：任务名称的全局唯一标识</p>
+				<p>2、任务Cron【必填】：任务执行的时间表达式(quartz格式)</p>
+				<p>3、任务描述【必填】：任务的简述</p>
+				<p>4、任务机器【必填】：任务所在机器的ip地址，比如127.0.0.1:8080</p>
+				<p>5、期望执行的类名【必填】：任务class名，包含package</p>
+				<p>6、期望执行的方法【必填】：方法名</p>
+				<p>7、方法入参【选填】：方法入参，多个参数用,分隔</p>
 				<p>备注:
 					<p style="padding-left:30px;">Quartz格式: [秒] [分] [小时] [日] [月] [周] [年] <a href="http://www.jeasyuicn.com/cron/" target="_blank" style="color:rgb(15, 163, 221);">Quartz Cron在线工具</a></p>
 					<p style="padding-left:30px;">* : 所有值;</p>
@@ -76,7 +76,7 @@
 					<p style="padding-left:30px;">- : 区间值,表示一个指定的范围;</p>
 					<p style="padding-left:30px;">, : 表示附加一个可能值;</p>
 					<p style="padding-left:30px;">/ : 符号前表示开始时间，符号后表示每次递增的值;</p>
-					<br/>样例:
+					样例:
 					<p style="padding-left:30px;">0 15 10 * * ? 每天10点15分触发</p>
 					<p style="padding-left:30px;">0 * 14 * * ? 每天下午的 2点到2点59分每分触发</p>
 					<p style="padding-left:30px;">0 0/5 14 * * ? 每天下午的 2点到2点59分(整点开始，每隔5分触发)</p>
@@ -85,34 +85,34 @@
             
             <div class="callout callout-default">
 				<h4>调度列表属性说明</h4>
-				<p>1、状态：SUSPEND->暂停调度中;SCHEDELED->调度中.</p>
-				<p>2、操作[恢复]：将暂停调度中的任务恢复到调度中.</p>
-				<p>3、操作[暂停]：将调度中的任务暂停调度.</p>
-				<p>4、操作[执行]：手动触发一次任务执行.</p>
-				<p>5、操作[删除]：删除此任务调度.</p>
-				<p>6、操作[更新cron]：更改任务调度时间.</p>
+				<p>1、状态：SUSPEND->暂停调度中;SCHEDELED->调度中</p>
+				<p>2、操作[恢复]：将暂停调度中的任务恢复到调度中</p>
+				<p>3、操作[暂停]：将调度中的任务暂停调度</p>
+				<p>4、操作[执行]：手动触发一次任务执行</p>
+				<p>5、操作[删除]：删除此任务调度</p>
+				<p>6、操作[更新cron]：更改任务调度时间</p>
             </div>
             
             <div class="callout callout-default">
 				<h4>任务应用方接入说明</h4>
-				<p>1、maven依赖:<br/>
-				&ltdependency><br/>
-    				&nbsp;&nbsp;&nbsp;&nbsp; &ltgroupId>com.dianping&lt/groupId><br/>
-    				&nbsp;&nbsp;&nbsp;&nbsp; &ltartifactId>ferrari-core&lt/artifactId><br/>
-    				&nbsp;&nbsp;&nbsp;&nbsp; &ltversion>1.0.0-SNAPSHOT&lt/version><br/>
-   	 			&lt/dependency>
-				</p>
-				<p>2、web.xml配置servlet入口:<br/>
-				&ltservlet><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp; &ltservlet-name>FerrariServlet&lt/servlet-name><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp; &ltservlet-class>com.cip.ferrari.core.FerrariDirectServlet&lt/servlet-class><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp; &ltload-on-startup>1&lt/load-on-startup><br/>
-				&lt/servlet><br/>
+				<p>1、maven依赖
+				<p>&ltdependency></p>
+    			<p style="padding-left:30px;">&ltgroupId>com.dianping&lt/groupId></p>
+    			<p style="padding-left:30px;">&ltartifactId>ferrari-core&lt/artifactId></p>
+    			<p style="padding-left:30px;">&ltversion>1.0.0-SNAPSHOT&lt/version></p>
+   	 			<p>&lt/dependency></p>
+   	 			</p>
+				<p>2、web.xml配置servlet入口
+				<p>&ltservlet><p/>
+				<p style="padding-left:30px;">&ltservlet-name>FerrariServlet&lt/servlet-name></p>
+				<p style="padding-left:30px;">&ltservlet-class>com.cip.ferrari.core.FerrariDirectServlet&lt/servlet-class></p>
+				<p style="padding-left:30px;">&ltload-on-startup>1&lt/load-on-startup></p>
+				<p>&lt/servlet><p/>
 
-				&ltservlet-mapping><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp; &ltservlet-name> FerrariServlet&lt/servlet-name><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp; &lturl-pattern>/ferraricontainer/*&lt/url-pattern><br/>
-				&lt/servlet-mapping>
+				<p>&ltservlet-mapping></p>
+				<p style="padding-left:30px;"> &ltservlet-name> FerrariServlet&lt/servlet-name></p>
+				<p style="padding-left:30px;"> &lturl-pattern>/ferraricontainer/*&lt/url-pattern></p>
+				<p>&lt/servlet-mapping></p>
 				</p>
 				<p>3、开始写你的任务类及方法，类名、方法、入参在新增任务时配置</p>
             </div>
