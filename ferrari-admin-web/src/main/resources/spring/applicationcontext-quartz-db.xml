@@ -16,6 +16,8 @@
         <property name="autoStartup" value="true" />
         <!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
   		<property name="startupDelay" value="20" />
+  		<!--需要overwrite已经存在的job，如果需要动态的修改已经存在的job，就需要设置为true，否则会以数据库中已经存在的为准-->
+		<property name="overwriteExistingJobs" value="true" />
 		<property name="applicationContextSchedulerContextKey"  value="applicationContextKey" /> 
         <property name="configLocation" value="classpath:quartz.properties"/>
 	</bean>
