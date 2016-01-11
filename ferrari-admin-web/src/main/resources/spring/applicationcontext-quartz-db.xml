@@ -11,7 +11,10 @@
 
 	<bean id="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="dataSource" ref="Wedding.Main.dataSource" />
+		<!-- 设置自动启动 -->
         <property name="autoStartup" value="true" />
+        <!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
+  		<property name="startupDelay" value="30" />
 		<property name="applicationContextSchedulerContextKey"  value="applicationContextKey" /> 
         <property name="configLocation" value="classpath:quartz.properties"/>
 	</bean>
