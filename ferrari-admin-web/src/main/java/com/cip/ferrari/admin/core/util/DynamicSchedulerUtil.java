@@ -152,8 +152,8 @@ public final class DynamicSchedulerUtil implements InitializingBean {
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
         if (scheduler.checkExists(triggerKey)) {
-            // CronTrigger : TriggerKey + cronExpression
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+            // CronTrigger : TriggerKey + cronExpression + MISFIRE_INSTRUCTION_DO_NOTHING
+            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
             CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
             
             Date date = scheduler.rescheduleJob(triggerKey, cronTrigger);
