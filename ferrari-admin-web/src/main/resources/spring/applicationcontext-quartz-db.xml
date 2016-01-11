@@ -9,7 +9,8 @@
            http://www.springframework.org/schema/util 
            http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<!-- 默认 lazy-init="false" -->
+	<bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="dataSource" ref="Wedding.Main.dataSource" />
 		<!-- 设置自动启动 -->
         <property name="autoStartup" value="true" />
