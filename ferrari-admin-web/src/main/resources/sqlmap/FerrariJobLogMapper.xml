@@ -36,11 +36,15 @@
 	
 	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerrariJobLog" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO FRI_QRTZ_TriggerLog (
+			`add_time`,
+			`update_time`,
 			`job_name`, 
 			`job_cron`, 
 			`job_class`, 
 			`job_data`
 		) VALUES (
+			now(),
+			now(),
 			#{jobName}, 
 			#{jobCron}, 
 			#{jobClass}, 
@@ -62,7 +66,8 @@
 		SET 
 			`trigger_time`= #{triggerTime}, 
 			`trigger_status`= #{triggerStatus}, 
-			`trigger_msg`= #{triggerMsg}
+			`trigger_msg`= #{triggerMsg},
+			`update_time`=now()
 		WHERE `id`= #{id}
 	</update>
 	
@@ -71,7 +76,8 @@
 		SET 
 			`handle_time`= #{handleTime}, 
 			`handle_status`= #{handleStatus}, 
-			`handle_msg`= #{handleMsg} 
+			`handle_msg`= #{handleMsg},
+			`update_time`=now()
 		WHERE `id`= #{id}
 	</update>
 	
