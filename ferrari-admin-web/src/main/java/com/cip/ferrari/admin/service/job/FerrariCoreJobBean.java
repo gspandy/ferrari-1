@@ -66,6 +66,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		String responseMsg = postResp[0];
 		String exceptionMsg = postResp[1];
 		jobLog.setTriggerTime(new Date());
+		jobLog.setTriggerHost(HostUtil.getIP()+"__"+HostUtil.getHostname());
 		jobLog.setTriggerStatus(HttpUtil.FAIL);
 		jobLog.setTriggerMsg(exceptionMsg);
 		if (StringUtils.isNotBlank(responseMsg)) {

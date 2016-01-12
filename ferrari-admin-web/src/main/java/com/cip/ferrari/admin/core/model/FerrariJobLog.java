@@ -11,6 +11,7 @@ public class FerrariJobLog{
 	private int id;
 	private Date addTime;
 	private Date updateTime;
+	
 	// job info
 	private String jobName;
 	private String jobCron;
@@ -21,6 +22,7 @@ public class FerrariJobLog{
 	private Date triggerTime;
 	private String triggerStatus;
 	private String triggerMsg;
+	private String triggerHost;
 	
 	// handle info
 	private Date handleTime;
@@ -87,6 +89,12 @@ public class FerrariJobLog{
 	}
 	public void setTriggerMsg(String triggerMsg) {
 		this.triggerMsg = triggerMsg;
+	}
+	public String getTriggerHost() {
+		return triggerHost;
+	}
+	public void setTriggerHost(String triggerHost) {
+		this.triggerHost = triggerHost;
 	}
 	public Date getHandleTime() {
 		return handleTime;
