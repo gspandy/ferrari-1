@@ -34,15 +34,15 @@
 				<div class="col-xs-12">
 					<div class="box">
 			            <div class="box-header">
-			            	<h3 class="box-title">调度列表</h3>
+			            	<!-- <h3 class="box-title">调度列表</h3> -->
 			            	<button class="btn btn-info btn-xs addFerrari" type="button">+新增任务</button>
-			            	<#-- <button class="btn btn-info btn-xs add" type="button">+新增任务[ferrari-client]</button> -->
+			            	<!-- <button class="btn btn-info btn-xs add" type="button">+新增任务[ferrari-client]</button> -->
 			            </div>
 			            <div class="box-body">
 			              	<table id="job_list" class="table table-bordered table-striped">
 				                <thead>
 					            	<tr>
-					                	<th>调度key</th>
+					                	<th>任务key</th>
 					                  	<th>cron</th>
 					                  	<!--<th>类路径</th>-->
 					                  	<th>参数</th>
@@ -93,16 +93,18 @@
 									</#list>
 									</#if>
 				                </tbody>
+				                <!--
 				                <tfoot>
 					            	<tr>
-					                  	<th>调度key</th>
+					                  	<th>任务key</th>
 					                  	<th>cron</th>
-					                  	<!--<th>类路径</th>-->
+					                  	<!--<th>类路径</th>
 					                  	<th>参数</th>
 					                  	<th>状态</th>
 					                  	<th>操作</th>
 					                </tr>
 				                </tfoot>
+				                -->
 							</table>
 						</div>
 					</div>

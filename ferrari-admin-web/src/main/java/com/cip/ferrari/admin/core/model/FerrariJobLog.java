@@ -9,6 +9,8 @@ import java.util.Date;
 public class FerrariJobLog{
 	
 	private int id;
+	private Date addTime;
+	private Date updateTime;
 	// job info
 	private String jobName;
 	private String jobCron;
@@ -30,6 +32,19 @@ public class FerrariJobLog{
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public Date getAddTime() {
+		return addTime;
+	}
+	public void setAddTime(Date addTime) {
+		this.addTime = addTime;
+	}
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 	public String getJobName() {
 		return jobName;
