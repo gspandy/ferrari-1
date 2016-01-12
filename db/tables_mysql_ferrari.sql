@@ -176,6 +176,7 @@ CREATE TABLE FRI_QRTZ_TriggerLog (
 	`trigger_time` datetime DEFAULT NULL,
 	`trigger_status` varchar(64) DEFAULT NULL,
 	`trigger_msg` varchar(2048) DEFAULT NULL,
+	`trigger_host` varchar(128) DEFAULT NULL,
 	`handle_time` datetime DEFAULT NULL,
 	`handle_status` varchar(64) DEFAULT NULL,
 	`handle_msg` varchar(2048) DEFAULT NULL,
