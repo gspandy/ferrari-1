@@ -166,18 +166,20 @@ CREATE TABLE FRI_QRTZ_LOCKS
 );
 
 CREATE TABLE FRI_QRTZ_TriggerLog (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `job_name` varchar(255) NOT NULL,
-  `job_cron` varchar(128) DEFAULT NULL,
-  `job_class` varchar(255) DEFAULT NULL,
-  `job_data` varchar(2048) DEFAULT NULL,
-  `trigger_time` datetime DEFAULT NULL,
-  `trigger_status` varchar(255) DEFAULT NULL,
-  `trigger_msg` varchar(2048) DEFAULT NULL,
-  `handle_time` datetime DEFAULT NULL,
-  `handle_status` varchar(255) DEFAULT NULL,
-  `handle_msg` varchar(2048) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`add_time` datetime NOT NULL,
+	`update_time` datetime NOT NULL,
+	`job_name` varchar(128) NOT NULL,
+	`job_cron` varchar(64) DEFAULT NULL,
+	`job_class` varchar(256) DEFAULT NULL,
+	`job_data` varchar(2048) DEFAULT NULL,
+	`trigger_time` datetime DEFAULT NULL,
+	`trigger_status` varchar(64) DEFAULT NULL,
+	`trigger_msg` varchar(2048) DEFAULT NULL,
+	`handle_time` datetime DEFAULT NULL,
+	`handle_status` varchar(64) DEFAULT NULL,
+	`handle_msg` varchar(2048) DEFAULT NULL,
+	 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 commit;
