@@ -1,6 +1,6 @@
-package com.cip.ferrari.admin.core.util;
+package com.cip.ferrari.admin.common;
 
-public class Constantz {
+public class FerrariConstantz {
 
 	// ---------------------------------- HttpJobBean -------------
 	/**
@@ -28,5 +28,10 @@ public class Constantz {
 	 * 调度日志回调URL
 	 */
 	public static final String triggerLogUrl = "triggerLogUrl";
+	
+	/**
+	 * job group-name分隔符
+	 */
+	public static final String job_group_name_split = "__";
 	
 }

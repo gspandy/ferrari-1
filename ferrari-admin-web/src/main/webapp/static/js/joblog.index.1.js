@@ -14,6 +14,7 @@ $(function() {
 	    },
 	    "columns": [
 	                { "data": 'id', "bSortable": false, "visible" : false},
+	                { "data": 'jobGroupDesc', "bSortable": false},
 	                { "data": 'jobName', "bSortable": false},
 	                { "data": 'jobCron', "bSortable": false, "visible" : false},
 	                { "data": 'jobClass', "bSortable": false, "visible" : false},

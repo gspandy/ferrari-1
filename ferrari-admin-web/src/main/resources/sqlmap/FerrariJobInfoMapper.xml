@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FerrariJobInfoMapper">
+	
+	<resultMap id="ferrariJobInfo" type="com.cip.ferrari.admin.core.model.FerrariJobInfo" >
+		<result column="id" property="id" />
+		<result column="add_time" property="addTime" />
+		<result column="update_time" property="updateTime" />
+	    <result column="job_group" property="jobGroup" />
+	    <result column="job_name" property="jobName" />
+	    <result column="job_desc" property="jobDesc" />
+	    <result column="owner" property="owner" />
+	    <result column="mail_receives" property="mailReceives" />
+	    <result column="fail_alarm_num" property="failAlarmNum" />
+	    <result column="is_deleted" property="isDeleted" />
+	</resultMap>
+	
+	<sql id="All_Column_List">
+		id,
+		add_time
+		update_time,
+		job_group,
+		job_name,
+		job_desc,
+		owner,
+		mail_receives,
+		fail_alarm_num,
+		is_deleted
+	</sql>
+	
+	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerrariJobInfo" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO FRI_QRTZ_TriggerLog (
+			`add_time`,
+			`update_time`,
+			`job_group`, 
+			`job_name`, 
+			`job_desc`, 
+			`owner`, 
+			`mail_receives`, 
+			`fail_alarm_num`, 
+			`is_deleted`
+		) VALUES (
+			now(),
+			now(),
+			#{jobGroup}, 
+			#{jobName}, 
+			#{jobDesc}, 
+			#{owner}, 
+			#{mailReceives}, 
+			#{failAlarmNum}, 
+			#{isDeleted}
+		);
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id"> 
+			SELECT LAST_INSERT_ID() 
+		</selectKey> 
+	</insert>
+	
+	
+</mapper>

@@ -12,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import com.cip.ferrari.admin.common.FerrariConstantz;
+import com.cip.ferrari.admin.common.HostUtil;
+import com.cip.ferrari.admin.common.JobGroupEnum;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
-import com.cip.ferrari.admin.core.util.HostUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
 import com.cip.ferrari.core.common.JobConstants;
@@ -37,7 +39,16 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		
 		// save log
 		FerrariJobLog jobLog = new FerrariJobLog();
-		jobLog.setJobName(context.getTrigger().getJobKey().getName());
+		String jobKey = context.getTrigger().getJobKey().getName();
+		String[] groupAndName = jobKey.split(FerrariConstantz.job_group_name_split);
+		if(groupAndName.length==2){
+			jobLog.setJobGroup(groupAndName[0]);
+			jobLog.setJobName(groupAndName[1]);
+		}else{
+			jobLog.setJobGroup(JobGroupEnum.DEFAULT.name());//设为默认的
+			jobLog.setJobName(jobKey);
+		}
+		
 		jobLog.setJobCron((context.getTrigger() instanceof CronTriggerImpl)?(((CronTriggerImpl) context.getTrigger()).getCronExpression()):"");
 		jobLog.setJobClass(FerrariCoreJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(jobDataMap));

@@ -13,8 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import com.cip.ferrari.admin.common.FerrariConstantz;
+import com.cip.ferrari.admin.common.JobGroupEnum;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
-import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
@@ -50,7 +51,14 @@ public class HttpJobBean extends QuartzJobBean {
 		
 		// save log
 		FerrariJobLog jobLog = new FerrariJobLog();
-		jobLog.setJobName(triggerKey);
+		String[] groupAndName = triggerKey.split(FerrariConstantz.job_group_name_split);
+		if(groupAndName.length==2){
+			jobLog.setJobGroup(groupAndName[0]);
+			jobLog.setJobName(groupAndName[1]);
+		}else{
+			jobLog.setJobGroup(JobGroupEnum.DEFAULT.name());//设为默认的
+			jobLog.setJobName(triggerKey);
+		}
 		jobLog.setJobCron(cornExp);
 		jobLog.setJobClass(HttpJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(params));
@@ -58,9 +66,9 @@ public class HttpJobBean extends QuartzJobBean {
 		logger.info(">>>>>>>>>>> xxl-job trigger start, jobLog:{}", jobLog);
 		
 		// trigger request
-		params.put(Constantz.triggerLogId, String.valueOf(jobLog.getId()));
-		params.put(Constantz.triggerLogUrl, PropertiesUtil.getString(Constantz.triggerLogUrl));
-		String[] postResp = HttpUtil.post(params.get(Constantz.job_url), params);
+		params.put(FerrariConstantz.triggerLogId, String.valueOf(jobLog.getId()));
+		params.put(FerrariConstantz.triggerLogUrl, PropertiesUtil.getString(FerrariConstantz.triggerLogUrl));
+		String[] postResp = HttpUtil.post(params.get(FerrariConstantz.job_url), params);
 		logger.info(">>>>>>>>>>> xxl-job trigger http response, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
 		
 		// parse trigger response
