@@ -18,7 +18,7 @@
 	
 	<sql id="All_Column_List">
 		id,
-		add_time
+		add_time,
 		update_time,
 		job_group,
 		job_name,
@@ -30,7 +30,7 @@
 	</sql>
 	
 	<insert id="save" parameterType="com.cip.ferrari.admin.core.model.FerrariJobInfo" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO FRI_QRTZ_TriggerLog (
+		INSERT INTO FRI_QRTZ_JobInfo (
 			`add_time`,
 			`update_time`,
 			`job_group`, 

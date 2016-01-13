@@ -10,7 +10,7 @@
            http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<context:annotation-config />
-	<context:component-scan base-package="com.cip.ferrari.admin.service, com.cip.ferrari.admin.dao" />
+	<context:component-scan base-package="com.cip.ferrari.admin.dao.impl" />
 
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/template/" />

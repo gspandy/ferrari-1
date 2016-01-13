@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.Resource;
-
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -28,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 
 /**
  * base quartz scheduler util
@@ -37,18 +33,8 @@ import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 public final class DynamicSchedulerUtil implements InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(DynamicSchedulerUtil.class);
     
-    public static IFerrariJobLogDao ferrariJobLogDao;
     
     private static Scheduler scheduler;
-    
-    @Resource
-    public void setFerraliJobLogDao(IFerrariJobLogDao ferrariJobLogDao) {
-		DynamicSchedulerUtil.ferrariJobLogDao = ferrariJobLogDao;
-	}
-    
-    public static IFerrariJobLogDao getFerrariJobLogDao() {
-		return ferrariJobLogDao;
-	}
     
     public static void setScheduler(Scheduler scheduler) {
 		DynamicSchedulerUtil.scheduler = scheduler;

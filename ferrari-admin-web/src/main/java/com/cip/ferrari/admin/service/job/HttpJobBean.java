@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import com.cip.ferrari.admin.common.FerrariBeanFactory;
 import com.cip.ferrari.admin.common.FerrariConstantz;
 import com.cip.ferrari.admin.common.JobGroupEnum;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
@@ -20,6 +21,7 @@ import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
 import com.cip.ferrari.admin.core.util.PropertiesUtil;
+import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 
 /**
  * http job bean
@@ -28,6 +30,8 @@ import com.cip.ferrari.admin.core.util.PropertiesUtil;
 public class HttpJobBean extends QuartzJobBean {
 	private static Logger logger = LoggerFactory.getLogger(HttpJobBean.class);
 
+	private IFerrariJobLogDao ferrariJobLogDao;
+	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
@@ -62,7 +66,10 @@ public class HttpJobBean extends QuartzJobBean {
 		jobLog.setJobCron(cornExp);
 		jobLog.setJobClass(HttpJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(params));
-		DynamicSchedulerUtil.getFerrariJobLogDao().save(jobLog);
+		if(ferrariJobLogDao == null){
+			ferrariJobLogDao = (IFerrariJobLogDao) FerrariBeanFactory.getBean("ferrariJobLogDao");
+		}
+		ferrariJobLogDao.save(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger start, jobLog:{}", jobLog);
 		
 		// trigger request
@@ -91,7 +98,7 @@ public class HttpJobBean extends QuartzJobBean {
 		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1500) {
 			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
 		}
-		DynamicSchedulerUtil.getFerrariJobLogDao().updateTriggerInfo(jobLog);
+		ferrariJobLogDao.updateTriggerInfo(jobLog);
 		logger.info(">>>>>>>>>>> xxl-job trigger end, jobLog.id:{}, jobLog:{}", jobLog.getId(), jobLog);
 		
     }

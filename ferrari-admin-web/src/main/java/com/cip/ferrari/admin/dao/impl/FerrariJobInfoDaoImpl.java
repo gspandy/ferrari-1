@@ -15,8 +15,10 @@ import com.cip.ferrari.admin.dao.IFerrariJobInfoDao;
  * @author yuantengkai
  *
  */
-@Repository
+@Repository(FerrariJobInfoDaoImpl.BeanName)
 public class FerrariJobInfoDaoImpl implements IFerrariJobInfoDao {
+	
+	public static final String BeanName = "ferrariJobInfoDao";
 
 	@Resource
 	public SqlSessionTemplate sqlSessionTemplate;
