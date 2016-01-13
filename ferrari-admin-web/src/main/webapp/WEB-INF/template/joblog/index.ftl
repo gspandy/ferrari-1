@@ -65,8 +65,9 @@
 				                <thead>
 					            	<tr>
 					                	<th>id</th>
-					                  	<th class="jobName" >任务Key</th>
-					                  	<th class="jobCron" >任务Corn</th>
+					                  	<th class="jobGroup" >任务组</th>
+					                  	<th class="jobName" >任务名称</th>
+					                  	<th class="jobCron" >任务Cron</th>
 					                  	<th class="jobClass" >任务类型</th>
 					                  	<th class="jobData" >任务数据</th>
 					                  	<th class="triggerTime" >调度时间</th>

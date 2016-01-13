@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cip.ferrari.admin.core.util;
+package com.cip.ferrari.admin.common;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

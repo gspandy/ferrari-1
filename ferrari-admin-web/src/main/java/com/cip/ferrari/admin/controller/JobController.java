@@ -20,8 +20,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cip.ferrari.admin.common.FerrariConstantz;
 import com.cip.ferrari.admin.core.model.ReturnT;
-import com.cip.ferrari.admin.core.util.Constantz;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.service.job.FerrariCoreJobBean;
 import com.cip.ferrari.admin.service.job.HttpJobBean;
@@ -82,13 +82,13 @@ public class JobController {
 		}
 		
 		// jobData
-		if (jobData.get(Constantz.job_desc)==null || jobData.get(Constantz.job_desc).toString().trim().length()==0) {
+		if (jobData.get(FerrariConstantz.job_desc)==null || jobData.get(FerrariConstantz.job_desc).toString().trim().length()==0) {
 			return new ReturnT<String>(500, "请输入“任务描述”");
 		}
-		if (jobData.get(Constantz.job_url)==null || jobData.get(Constantz.job_url).toString().trim().length()==0) {
+		if (jobData.get(FerrariConstantz.job_url)==null || jobData.get(FerrariConstantz.job_url).toString().trim().length()==0) {
 			return new ReturnT<String>(500, "请输入“任务URL”");
 		}
-		if (jobData.get(Constantz.handleName)==null || jobData.get(Constantz.handleName).toString().trim().length()==0) {
+		if (jobData.get(FerrariConstantz.handleName)==null || jobData.get(FerrariConstantz.handleName).toString().trim().length()==0) {
 			return new ReturnT<String>(500, "请输入“任务handler”");
 		}
 		

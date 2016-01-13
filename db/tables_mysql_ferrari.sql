@@ -169,6 +169,7 @@ CREATE TABLE FRI_QRTZ_TriggerLog (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`add_time` datetime NOT NULL,
 	`update_time` datetime NOT NULL,
+	`job_group` varchar(64) NOT NULL,
 	`job_name` varchar(128) NOT NULL,
 	`job_cron` varchar(64) DEFAULT NULL,
 	`job_class` varchar(256) DEFAULT NULL,
