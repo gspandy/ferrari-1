@@ -12,5 +12,7 @@ import com.cip.ferrari.admin.core.model.FerrariJobInfo;
 public interface IFerrariJobInfoDao {
 	
 	public int save(FerrariJobInfo ferrariJobInfo);
+	
+	public FerrariJobInfo loadJobInfoByGroupAndName(String jobGroup,String jobName);
 
 }

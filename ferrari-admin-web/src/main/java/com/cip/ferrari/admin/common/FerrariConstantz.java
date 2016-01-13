@@ -34,4 +34,6 @@ public class FerrariConstantz {
 	 */
 	public static final String job_group_name_split = "__";
 	
+	public static final String job_info_id = "jobInfoId";
+	
 }

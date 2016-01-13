@@ -19,6 +19,7 @@ public class FerrariJobInfo {
 	private Date updateTime;
 	private String jobGroup;//job所在业务组
 	private String jobName;//job名称
+	private String jobKey;//jobkey--对应到quartz
 	private String jobDesc;//job描述
 	private String owner;//job负责人
 	private String mailReceives;//邮件联系人，多个用,分隔
@@ -54,6 +55,13 @@ public class FerrariJobInfo {
 	}
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
+	}
+	
+	public String getJobKey() {
+		return jobKey;
+	}
+	public void setJobKey(String jobKey) {
+		this.jobKey = jobKey;
 	}
 	public String getJobDesc() {
 		return jobDesc;

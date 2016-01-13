@@ -9,6 +9,7 @@
 		<result column="update_time" property="updateTime" />
 	    <result column="job_group" property="jobGroup" />
 	    <result column="job_name" property="jobName" />
+	    <result column="job_key" property="jobKey" />
 	    <result column="job_desc" property="jobDesc" />
 	    <result column="owner" property="owner" />
 	    <result column="mail_receives" property="mailReceives" />
@@ -22,6 +23,7 @@
 		update_time,
 		job_group,
 		job_name,
+		job_key,
 		job_desc,
 		owner,
 		mail_receives,
@@ -35,6 +37,7 @@
 			`update_time`,
 			`job_group`, 
 			`job_name`, 
+			`job_key`, 
 			`job_desc`, 
 			`owner`, 
 			`mail_receives`, 
@@ -45,6 +48,7 @@
 			now(),
 			#{jobGroup}, 
 			#{jobName}, 
+			#{jobKey}, 
 			#{jobDesc}, 
 			#{owner}, 
 			#{mailReceives}, 
@@ -55,6 +59,14 @@
 			SELECT LAST_INSERT_ID() 
 		</selectKey> 
 	</insert>
+	
+	<select id="loadByGroupAndName" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
+		SELECT <include refid="All_Column_List" />
+		FROM FRI_QRTZ_JobInfo
+		WHERE job_group = #{jobGroup}
+		AND   job_name = #{jobName}
+		AND   is_deleted = 0
+	</select>
 	
 	
 </mapper>
