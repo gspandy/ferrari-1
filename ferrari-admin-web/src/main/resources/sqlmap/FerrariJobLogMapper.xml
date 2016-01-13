@@ -6,6 +6,7 @@
 	<resultMap id="ferrariJobLog" type="com.cip.ferrari.admin.core.model.FerrariJobLog" >
 		<result column="id" property="id" />
 		
+	    <result column="job_info_id" property="jobInfoId" />
 	    <result column="job_group" property="jobGroup" />
 	    <result column="job_name" property="jobName" />
 	    <result column="job_cron" property="jobCron" />
@@ -23,6 +24,7 @@
 
 	<sql id="Base_Column_List">
 		t.id,
+		t.job_info_id,
 		t.job_group,
 		t.job_name,
 		t.job_cron,
@@ -40,6 +42,7 @@
 		INSERT INTO FRI_QRTZ_TriggerLog (
 			`add_time`,
 			`update_time`,
+			`job_info_id`, 
 			`job_group`, 
 			`job_name`, 
 			`job_cron`, 
@@ -48,6 +51,7 @@
 		) VALUES (
 			now(),
 			now(),
+			#{jobInfoId}, 
 			#{jobGroup}, 
 			#{jobName}, 
 			#{jobCron}, 

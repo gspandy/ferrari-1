@@ -18,6 +18,7 @@ public class FerrariJobLog{
 	private Date updateTime;
 	
 	// job info
+	private int jobInfoId;//jobInfo表自增id
 	private String jobGroup;
 	private String jobName;
 	private String jobCron;
@@ -53,6 +54,12 @@ public class FerrariJobLog{
 	}
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+	public int getJobInfoId() {
+		return jobInfoId;
+	}
+	public void setJobInfoId(int jobInfoId) {
+		this.jobInfoId = jobInfoId;
 	}
 	public String getJobGroup() {
 		return jobGroup;

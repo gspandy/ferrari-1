@@ -19,6 +19,7 @@
 # DROP TABLE IF EXISTS FRI_QRTZ_JOB_DETAILS;
 # DROP TABLE IF EXISTS FRI_QRTZ_CALENDARS;
 # DROP TABLE IF EXISTS FRI_QRTZ_TriggerLog;
+# DROP TABLE IF EXISTS FRI_QRTZ_JobInfo;
 
 
 CREATE TABLE FRI_QRTZ_JOB_DETAILS
@@ -169,6 +170,7 @@ CREATE TABLE FRI_QRTZ_TriggerLog (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`add_time` datetime NOT NULL,
 	`update_time` datetime NOT NULL,
+	`job_info_id` int(11) NOT NULL,
 	`job_group` varchar(64) NOT NULL,
 	`job_name` varchar(128) NOT NULL,
 	`job_cron` varchar(64) DEFAULT NULL,
@@ -190,6 +192,7 @@ CREATE TABLE FRI_QRTZ_JobInfo (
 	`update_time` datetime NOT NULL,
 	`job_group` varchar(64) NOT NULL,
 	`job_name` varchar(128) NOT NULL,
+	`job_key` varchar(256) NOT NULL,
 	`job_desc` varchar(512) DEFAULT NULL,
 	`owner` varchar(64) DEFAULT NULL,
 	`mail_receives` varchar(256) DEFAULT NULL,

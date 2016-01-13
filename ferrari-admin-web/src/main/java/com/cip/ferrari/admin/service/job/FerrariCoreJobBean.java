@@ -16,10 +16,13 @@ import com.cip.ferrari.admin.common.FerrariBeanFactory;
 import com.cip.ferrari.admin.common.FerrariConstantz;
 import com.cip.ferrari.admin.common.HostUtil;
 import com.cip.ferrari.admin.common.JobGroupEnum;
+import com.cip.ferrari.admin.core.model.FerrariJobInfo;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
+import com.cip.ferrari.admin.dao.IFerrariJobInfoDao;
 import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
+import com.cip.ferrari.admin.dao.impl.FerrariJobInfoDaoImpl;
 import com.cip.ferrari.admin.dao.impl.FerrariJobLogDaoImpl;
 import com.cip.ferrari.core.common.JobConstants;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
@@ -35,6 +38,8 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 	
 	private IFerrariJobLogDao ferrariJobLogDao;
 	
+	private IFerrariJobInfoDao ferrariJobInfoDao;
+	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
@@ -44,12 +49,38 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		FerrariJobLog jobLog = new FerrariJobLog();
 		String jobKey = context.getTrigger().getJobKey().getName();
 		String[] groupAndName = jobKey.split(FerrariConstantz.job_group_name_split);
+		String jobGroup = null;
+		String jobName = null;
 		if(groupAndName.length==2){
-			jobLog.setJobGroup(groupAndName[0]);
-			jobLog.setJobName(groupAndName[1]);
+			jobGroup = groupAndName[0];
+			jobName = groupAndName[1];
 		}else{
-			jobLog.setJobGroup(JobGroupEnum.DEFAULT.name());//设为默认的
-			jobLog.setJobName(jobKey);
+			jobGroup = JobGroupEnum.DEFAULT.name();//设为默认的
+			jobName = jobKey;
+		}
+		jobLog.setJobGroup(jobGroup);
+		jobLog.setJobName(jobName);
+		jobLog.setJobInfoId(-1);
+		try{
+			Integer jobInfoId = Integer.valueOf(jobDataMap.get(FerrariConstantz.job_info_id)+"");
+			if(jobInfoId != null){
+				jobLog.setJobInfoId(jobInfoId);
+			}
+			if(ferrariJobInfoDao == null){
+				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
+			}
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			if(jobInfo != null){
+				jobLog.setJobInfoId(jobInfo.getId());
+			}
+		}catch(Exception e){
+			if(ferrariJobInfoDao == null){
+				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
+			}
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			if(jobInfo != null){
+				jobLog.setJobInfoId(jobInfo.getId());
+			}
 		}
 		
 		jobLog.setJobCron((context.getTrigger() instanceof CronTriggerImpl)?(((CronTriggerImpl) context.getTrigger()).getCronExpression()):"");
