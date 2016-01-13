@@ -184,4 +184,18 @@ CREATE TABLE FRI_QRTZ_TriggerLog (
 	 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE FRI_QRTZ_JobInfo (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`add_time` datetime NOT NULL,
+	`update_time` datetime NOT NULL,
+	`job_group` varchar(64) NOT NULL,
+	`job_name` varchar(128) NOT NULL,
+	`job_desc` varchar(512) DEFAULT NULL,
+	`owner` varchar(64) DEFAULT NULL,
+	`mail_receives` varchar(256) DEFAULT NULL,
+	`fail_alarm_num` int(11) DEFAULT NULL,
+	`is_deleted` tinyint(4) DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 commit;

@@ -24,6 +24,7 @@ public class FerrariJobInfo {
 	private String mailReceives;//邮件联系人，多个用,分隔
 	private int failAlarmNum;//连续失败次数报警阀值
 	private int isDeleted;//删除任务时，置为1
+	
 	public int getId() {
 		return id;
 	}
