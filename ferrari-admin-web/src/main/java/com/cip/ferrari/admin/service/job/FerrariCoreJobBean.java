@@ -12,31 +12,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import com.cip.ferrari.admin.common.FerrariBeanFactory;
 import com.cip.ferrari.admin.common.FerrariConstantz;
 import com.cip.ferrari.admin.common.HostUtil;
 import com.cip.ferrari.admin.common.JobGroupEnum;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
-import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
+import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
+import com.cip.ferrari.admin.dao.impl.FerrariJobLogDaoImpl;
 import com.cip.ferrari.core.common.JobConstants;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
 /**
  * ferrari任务版本，适用于：ferrari-core 
- * @author xuxueli 2015-12-17 18:20:34
+ * @author xuxueli 2015-12-17 18:20:34,多例
  */
 public class FerrariCoreJobBean extends QuartzJobBean {
 	private static Logger logger = LoggerFactory.getLogger(FerrariCoreJobBean.class);
 	
 	private final String PORT = "8080";
 	
+	private IFerrariJobLogDao ferrariJobLogDao;
+	
 	@Override
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
 		String triggerKeyName = context.getTrigger().getJobKey().getName();
 		Map<String, Object> jobDataMap = context.getMergedJobDataMap().getWrappedMap();
-		
 		// save log
 		FerrariJobLog jobLog = new FerrariJobLog();
 		String jobKey = context.getTrigger().getJobKey().getName();
@@ -52,7 +55,10 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		jobLog.setJobCron((context.getTrigger() instanceof CronTriggerImpl)?(((CronTriggerImpl) context.getTrigger()).getCronExpression()):"");
 		jobLog.setJobClass(FerrariCoreJobBean.class.getName());
 		jobLog.setJobData(JacksonUtil.writeValueAsString(jobDataMap));
-		DynamicSchedulerUtil.getFerrariJobLogDao().save(jobLog);
+		if(ferrariJobLogDao == null){
+			ferrariJobLogDao = (IFerrariJobLogDao) FerrariBeanFactory.getBean(FerrariJobLogDaoImpl.BeanName);
+		}
+		ferrariJobLogDao.save(jobLog);
 		if(logger.isInfoEnabled()){
 			logger.info("############ferrari job trigger starting..., jobLog:{}", jobLog);
 		}
@@ -96,13 +102,12 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1500) {
 			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
 		}
-		DynamicSchedulerUtil.getFerrariJobLogDao().updateTriggerInfo(jobLog);
+		ferrariJobLogDao.updateTriggerInfo(jobLog);
 		if(logger.isInfoEnabled()){
 			logger.info("############ferrari job trigger end, jobLog.id:{}", jobLog.getId());
 		}
 		
 		
     }
-	
 	
 }

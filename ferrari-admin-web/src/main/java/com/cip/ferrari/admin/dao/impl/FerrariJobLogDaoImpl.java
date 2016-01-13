@@ -12,8 +12,10 @@ import org.springframework.stereotype.Repository;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
 import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 
-@Repository
+@Repository(FerrariJobLogDaoImpl.BeanName)
 public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
+	
+	public static final String BeanName = "ferrariJobLogDao";
 	
 	@Resource
 	public SqlSessionTemplate sqlSessionTemplate;
