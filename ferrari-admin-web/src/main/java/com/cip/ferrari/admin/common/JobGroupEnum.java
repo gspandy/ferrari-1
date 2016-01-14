@@ -26,5 +26,13 @@ public enum JobGroupEnum {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+	public static JobGroupEnum match(String name){
+		for (JobGroupEnum item : JobGroupEnum.values()) {
+			if (item.name().equals(name)) {
+				return item;
+			}
+		}
+		return null;
+	}
 
 }

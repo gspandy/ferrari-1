@@ -9,7 +9,8 @@ $(function() {
 	        url: base_url + "/joblog/pageList" ,
 	        data : function ( d ) {
                 d.filterTime = $('#filterTime').val();
-                d.jobName = $('#jobName').val()
+                d.jobGroup = $('#jobGroup').val();
+                d.jobName = $('#jobName').val();
             }
 	    },
 	    "columns": [
@@ -18,7 +19,11 @@ $(function() {
 	                { "data": 'jobName', "bSortable": false},
 	                { "data": 'jobCron', "bSortable": false, "visible" : false},
 	                { "data": 'jobClass', "bSortable": false, "visible" : false},
-	                { "data": 'jobData', "bSortable": false, "visible" : false},
+	                { "data": 'jobData', "bSortable": false, "visible" : true,
+	                	"render": function ( data, type, row ) {
+	                		return data?"<a href='javascript:;' class='logTips' title='"+ data +"'>查看数据</a>":"无";
+	                	}
+	                },
 	                { 
 	                	"data": 'triggerTime', 
 	                	"bSortable": false, 

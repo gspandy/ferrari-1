@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,11 +19,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cip.ferrari.admin.common.FerrariConstantz;
+import com.cip.ferrari.admin.common.JobGroupEnum;
+import com.cip.ferrari.admin.core.model.FerrariJobInfo;
 import com.cip.ferrari.admin.core.model.ReturnT;
 import com.cip.ferrari.admin.core.util.DynamicSchedulerUtil;
+import com.cip.ferrari.admin.dao.IFerrariJobInfoDao;
 import com.cip.ferrari.admin.service.job.FerrariCoreJobBean;
 import com.cip.ferrari.admin.service.job.HttpJobBean;
 import com.cip.ferrari.core.common.JobConstants;
@@ -34,14 +39,45 @@ import com.cip.ferrari.core.common.JobConstants;
 @Controller
 @RequestMapping("/job")
 public class JobController {
-	
 	private static Logger Logger = LoggerFactory.getLogger(JobLogController.class);
+	
+	@Resource
+	private IFerrariJobInfoDao ferrariJobInfoDao;
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Map<String, Object>> jobList = DynamicSchedulerUtil.getJobList();
-		model.addAttribute("jobList", jobList);
+		model.addAttribute("groupEnum", JobGroupEnum.values());
 		return "job/index";
+	}
+	
+	@RequestMapping("/pageList")
+	@ResponseBody
+	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,  
+			@RequestParam(required = false, defaultValue = "10") int length,
+			String jobGroup, String jobName, String filterTime) {
+		
+		String jobKey = null;
+		if (StringUtils.isNotBlank(jobGroup) && StringUtils.isNotBlank(jobName)) {
+			jobKey = jobGroup.concat(FerrariConstantz.job_group_name_split).concat(jobName);
+		}
+		
+		// page list
+		List<FerrariJobInfo> list = ferrariJobInfoDao.pageList(start, length, jobKey, jobGroup);
+		int list_count = ferrariJobInfoDao.pageListCount(start, length, jobKey, jobGroup);
+		
+		// fill job info
+		if (list!=null && list.size()>0) {
+			for (FerrariJobInfo jobInfo : list) {
+				DynamicSchedulerUtil.fillJobInfo(jobInfo);
+			}
+		}
+		
+		// package result
+		Map<String, Object> maps = new HashMap<String, Object>();
+	    maps.put("recordsTotal", list_count);		// 总记录数
+	    maps.put("recordsFiltered", list_count);	// 过滤后的总记录数
+	    maps.put("data", list);  					// 分页列表
+		return maps;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -112,66 +148,68 @@ public class JobController {
 	 * @param request
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping("/addFerrari")
 	@ResponseBody
-	public ReturnT<String> addFerrari(HttpServletRequest request) {
-		String triggerKeyName = null;
-		String cronExpression = null;
-		Map<String, Object> jobData = new HashMap<String, Object>();
+	public ReturnT<String> addFerrari(String jobGroup, String jobName, String cronExpression, 
+			String job_desc, String job_address, String run_class, String run_method, String run_method_args,
+			String owner, String mailReceives, int failAlarmNum) {
 		
-		try {
-			request.setCharacterEncoding("utf-8");
-		} catch (UnsupportedEncodingException e1) {
+		// valid
+		if (JobGroupEnum.match(jobGroup) == null) {
+			return new ReturnT<String>(500, "请选择“任务组”");
 		}
-		Set<Map.Entry<String, String[]>> paramSet = request.getParameterMap().entrySet();
-		for (Entry<String, String[]> param : paramSet) {
-			if (param.getKey().equals("triggerKeyName")) {
-				triggerKeyName = param.getValue()[0];
-			} else if (param.getKey().equals("cronExpression")) {
-				cronExpression = param.getValue()[0];
-			} else {
-				jobData.put(param.getKey(), param.getValue().length>0?param.getValue()[0]:param.getValue());
-			}
-		}
-		
-		// triggerKeyName
-		if (StringUtils.isBlank(triggerKeyName)) {
-			return new ReturnT<String>(500, "请输入“任务key”");
-		}
-		
-		// cronExpression
-		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务cron”");
+		if (StringUtils.isBlank(jobName)) {
+			return new ReturnT<String>(500, "请输入“任务名”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
 			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
-		// jobClass
-		Class<? extends Job> jobClass = FerrariCoreJobBean.class;
-		
-		// jobData
-		if (jobData.get(JobConstants.KEY_JOB_DESC)==null || jobData.get(JobConstants.KEY_JOB_DESC).toString().trim().length()==0) {
+		if (StringUtils.isBlank(job_desc)) {
 			return new ReturnT<String>(500, "请输入“任务描述”");
 		}
-		if (jobData.get(JobConstants.KEY_JOB_ADDRESS)==null || jobData.get(JobConstants.KEY_JOB_ADDRESS).toString().trim().length()==0) {
-			return new ReturnT<String>(500, "请输入“机器地址”");
+		if (StringUtils.isBlank(job_address)) {
+			return new ReturnT<String>(500, "请输入“执行机器地址”");
 		}
-		if (jobData.get(JobConstants.KEY_RUN_CLASS)==null || jobData.get(JobConstants.KEY_RUN_CLASS).toString().trim().length()==0) {
-			return new ReturnT<String>(500, "请输入“期望执行的类”");
+		if (StringUtils.isBlank(run_class)) {
+			return new ReturnT<String>(500, "请输入“执行类”");
 		}
-		if (jobData.get(JobConstants.KEY_RUN_METHOD)==null || jobData.get(JobConstants.KEY_RUN_METHOD).toString().trim().length()==0) {
-			return new ReturnT<String>(500, "请输入“期望运行的方法”");
+		if (StringUtils.isBlank(run_method)) {
+			return new ReturnT<String>(500, "请输入“执行方法”");
+		}
+		if (StringUtils.isBlank(run_method_args)) {
+			return new ReturnT<String>(500, "请输入“执行方法入参”");
 		}
 		
+		// jobKey parse
+		String triggerKeyName = DynamicSchedulerUtil.generateTriggerKey(jobGroup, jobName);
+		
+		// store
+		FerrariJobInfo jobInfo = new FerrariJobInfo();
+		jobInfo.setJobGroup(jobGroup);
+		jobInfo.setJobName(jobName);
+		jobInfo.setJobKey(triggerKeyName);
+		jobInfo.setJobDesc(job_desc);
+		jobInfo.setOwner(owner);
+		jobInfo.setMailReceives(mailReceives);
+		jobInfo.setFailAlarmNum(failAlarmNum);
+		ferrariJobInfoDao.save(jobInfo);
+		
+		Map<String, Object> jobData = new HashMap<String, Object>();
+		jobData.put(JobConstants.KEY_JOB_ADDRESS, job_address);
+		jobData.put(JobConstants.KEY_RUN_CLASS, run_class);
+		jobData.put(JobConstants.KEY_RUN_METHOD, run_method);
+		jobData.put(JobConstants.KEY_RUN_METHOD_ARGS, run_method_args);
+		jobData.put(FerrariConstantz.job_info_id, jobInfo.getId());
+		
+		// quartz
 		try {
-			boolean result = DynamicSchedulerUtil.addJob(triggerKeyName, cronExpression, jobClass, jobData);
+			boolean result = DynamicSchedulerUtil.addJob(triggerKeyName, cronExpression, FerrariCoreJobBean.class, jobData);
 			if (!result) {
 				return new ReturnT<String>(500, "任务ID重复，请更换确认");
 			}
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
-			Logger.error("新增任务失败,triggerKeyName="+triggerKeyName+",jobData="+jobData,e);
+			Logger.error("新增任务失败,triggerKeyName="+triggerKeyName, e);
 		}
 		return ReturnT.FAIL;
 	}
@@ -184,24 +222,55 @@ public class JobController {
 	 */
 	@RequestMapping("/reschedule")
 	@ResponseBody
-	public ReturnT<String> reschedule(String triggerKeyName, String cronExpression) {
-		// triggerKeyName
+	public ReturnT<String> reschedule(String triggerKeyName, String cronExpression, 
+			String job_desc, String job_address, String run_class, String run_method, String run_method_args,
+			String owner, String mailReceives, int failAlarmNum) {
+		
+		// valid
 		if (StringUtils.isBlank(triggerKeyName)) {
 			return new ReturnT<String>(500, "请输入“任务key”");
-		}
-		// cronExpression
-		if (StringUtils.isBlank(cronExpression)) {
-			return new ReturnT<String>(500, "请输入“任务cron”");
 		}
 		if (!CronExpression.isValidExpression(cronExpression)) {
 			return new ReturnT<String>(500, "“任务cron”不合法");
 		}
+		if (StringUtils.isBlank(job_desc)) {
+			return new ReturnT<String>(500, "请输入“任务描述”");
+		}
+		if (StringUtils.isBlank(job_address)) {
+			return new ReturnT<String>(500, "请输入“执行机器地址”");
+		}
+		if (StringUtils.isBlank(run_class)) {
+			return new ReturnT<String>(500, "请输入“执行类”");
+		}
+		if (StringUtils.isBlank(run_method)) {
+			return new ReturnT<String>(500, "请输入“执行方法”");
+		}
+		if (StringUtils.isBlank(run_method_args)) {
+			return new ReturnT<String>(500, "请输入“执行方法入参”");
+		}
+		
+		FerrariJobInfo jobInfo = ferrariJobInfoDao.getByKey(triggerKeyName);
+		if (jobInfo == null) {
+			return new ReturnT<String>(500, "系统异常");
+		}
+		jobInfo.setJobDesc(job_desc);
+		jobInfo.setOwner(owner);
+		jobInfo.setMailReceives(mailReceives);
+		jobInfo.setFailAlarmNum(failAlarmNum);
+		
+		Map<String, Object> jobData = new HashMap<String, Object>();
+		jobData.put(JobConstants.KEY_JOB_ADDRESS, job_address);
+		jobData.put(JobConstants.KEY_RUN_CLASS, run_class);
+		jobData.put(JobConstants.KEY_RUN_METHOD, run_method);
+		jobData.put(JobConstants.KEY_RUN_METHOD_ARGS, run_method_args);
+		jobData.put(FerrariConstantz.job_info_id, jobInfo.getId());
+		
 		try {
-			boolean result = DynamicSchedulerUtil.rescheduleJob(triggerKeyName, cronExpression);
+			boolean result = DynamicSchedulerUtil.rescheduleJob(triggerKeyName, cronExpression, jobData);
+			ferrariJobInfoDao.updateJobInfo(jobInfo);
 			if(result){
 				return ReturnT.SUCCESS;
 			}
-			return ReturnT.FAIL;
 		} catch (SchedulerException e) {
 			Logger.error("更新任务执行时间失败,triggerKeyName="+triggerKeyName,e);;
 		}
@@ -217,11 +286,9 @@ public class JobController {
 	@ResponseBody
 	public ReturnT<String> remove(String triggerKeyName) {
 		try {
-			boolean result = DynamicSchedulerUtil.removeJob(triggerKeyName);
-			if(result){
-				return ReturnT.SUCCESS;
-			}
-			return ReturnT.FAIL;
+			DynamicSchedulerUtil.removeJob(triggerKeyName);
+			ferrariJobInfoDao.removeJob(triggerKeyName);
+			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
 			Logger.error("删除任务失败,triggerKeyName="+triggerKeyName,e);
 			return ReturnT.FAIL;

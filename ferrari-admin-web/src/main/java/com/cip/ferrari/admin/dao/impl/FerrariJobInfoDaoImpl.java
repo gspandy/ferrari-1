@@ -4,6 +4,7 @@
 package com.cip.ferrari.admin.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -40,6 +41,46 @@ public class FerrariJobInfoDaoImpl implements IFerrariJobInfoDao {
 		params.put("jobGroup", jobGroup);
 		params.put("jobName", jobName);
 		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.loadByGroupAndName", params);
+	}
+
+	@Override
+	public List<FerrariJobInfo> pageList(int offset, int pagesize, String jobKey, String jobGroup) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("pagesize", pagesize);
+		params.put("jobKey", jobKey);
+		params.put("jobGroup", jobGroup);
+		return sqlSessionTemplate.selectList("FerrariJobInfoMapper.pageList", params);
+	}
+
+	@Override
+	public int pageListCount(int offset, int pagesize, String jobKey, String jobGroup) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		params.put("pagesize", pagesize);
+		params.put("jobKey", jobKey);
+		params.put("jobGroup", jobGroup);
+		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.pageListCount", params);
+	}
+
+	@Override
+	public FerrariJobInfo get(int id) {
+		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.get", id);
+	}
+	
+	@Override
+	public FerrariJobInfo getByKey(String jobKey) {
+		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.getByKey", jobKey);
+	}
+
+	@Override
+	public int removeJob(String jobKey) {
+		return sqlSessionTemplate.update("FerrariJobInfoMapper.removeJob", jobKey);
+	}
+
+	@Override
+	public int updateJobInfo(FerrariJobInfo jobInfo) {
+		return sqlSessionTemplate.update("FerrariJobInfoMapper.updateJobInfo", jobInfo);
 	}
 
 }

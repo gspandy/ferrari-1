@@ -17,15 +17,21 @@ public class FerrariJobInfo {
 	private int id;
 	private Date addTime;
 	private Date updateTime;
-	private String jobGroup;//job所在业务组
-	private String jobName;//job名称
-	private String jobKey;//jobkey--对应到quartz
-	private String jobDesc;//job描述
-	private String owner;//job负责人
+	private String jobGroup;	//job所在业务组
+	private String jobName;		//job名称
+	private String jobKey;		//jobkey--对应到quartz
+	private String jobDesc;		//job描述
+	private String owner;		//job负责人
 	private String mailReceives;//邮件联系人，多个用,分隔
-	private int failAlarmNum;//连续失败次数报警阀值
-	private int isDeleted;//删除任务时，置为1
+	private int failAlarmNum;	//连续失败次数报警阀值
+	private int isDeleted;		//删除任务时，置为1
 	
+	// quartz params
+	private String jobCron;
+	private String jobClass;
+	private String jobStatus;
+	private String jobData;
+		
 	public int getId() {
 		return id;
 	}
@@ -94,8 +100,34 @@ public class FerrariJobInfo {
 		this.isDeleted = isDeleted;
 	}
 	
+	public String getJobCron() {
+		return jobCron;
+	}
+	public void setJobCron(String jobCron) {
+		this.jobCron = jobCron;
+	}
+	public String getJobClass() {
+		return jobClass;
+	}
+	public void setJobClass(String jobClass) {
+		this.jobClass = jobClass;
+	}
+	public String getJobStatus() {
+		return jobStatus;
+	}
+	public void setJobStatus(String jobStatus) {
+		this.jobStatus = jobStatus;
+	}
+	public String getJobData() {
+		return jobData;
+	}
+	public void setJobData(String jobData) {
+		this.jobData = jobData;
+	}
+	
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this,
 				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
+	
 }

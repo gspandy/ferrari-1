@@ -21,32 +21,32 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>调度日志</h1>
-			<!--
-			<ol class="breadcrumb">
-				<li><a><i class="fa fa-dashboard"></i>调度日志</a></li>
-				<li class="active">调度管理</li>
-			</ol>
-			-->
 		</section>
 		
 		<!-- Main content -->
 	    <section class="content">
 	    	<div class="row">
-	            <div class="col-xs-5">
+	            <div class="col-xs-4">
               		<div class="input-group">
-                		<span class="input-group-addon">
-	                  		调度时间
-	                	</span>
+                		<span class="input-group-addon">时间</span>
 	                	<input type="text" class="form-control" id="filterTime" readonly 
 	                		value="<#if triggerTimeStart?exists && triggerTimeEnd?exists >${triggerTimeStart?if_exists?string('yyyy-MM-dd HH:mm:ss')} - ${triggerTimeEnd?if_exists?string('yyyy-MM-dd HH:mm:ss')}</#if>"  >
 	              	</div>
 	            </div>
-	            <div class="col-xs-5">
+	            <div class="col-xs-3">
 	              	<div class="input-group">
-	                	<span class="input-group-addon">
-	                  		jobName
-	                	</span>
-	                	<input type="text" class="form-control" id="jobName" value="${jobName}" autocomplete="on" >
+	                	<span class="input-group-addon">任务组</span>
+                		<select class="form-control" id="jobGroup" >
+                			<#list groupEnum as group>
+                				<option value="${group}" <#if jobInfo?exists && group == jobInfo.jobGroup>selected</#if> >${group.desc}</option>
+                			</#list>
+	                  	</select>
+	              	</div>
+	            </div>
+	            <div class="col-xs-3">
+	              	<div class="input-group">
+	                	<span class="input-group-addon">任务名</span>
+	                	<input type="text" class="form-control" id="jobName" value="<#if jobInfo?exists>${jobInfo.jobName}</#if>" autocomplete="on" >
 	              	</div>
 	            </div>
 	            <div class="col-xs-2">
@@ -89,8 +89,6 @@
 	
 	<!-- footer -->
 	<@netCommon.commonFooter />
-	<!-- control -->
-	<@netCommon.commonControl />
 </div>
 
 <@netCommon.commonScript />

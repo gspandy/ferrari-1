@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cip.ferrari.admin.common.JobGroupEnum;
 import com.cip.ferrari.admin.core.model.FerrariJobLog;
 import com.cip.ferrari.admin.core.model.ReturnT;
 import com.cip.ferrari.admin.core.util.HttpUtil;
 import com.cip.ferrari.admin.core.util.JacksonUtil;
+import com.cip.ferrari.admin.dao.IFerrariJobInfoDao;
 import com.cip.ferrari.admin.dao.IFerrariJobLogDao;
 import com.cip.ferrari.core.job.result.FerrariFeedback;
 
@@ -38,6 +40,8 @@ public class JobLogController {
 	
 	@Resource
 	public IFerrariJobLogDao ferraliJobLogDao;
+	@Resource
+	public IFerrariJobInfoDao ferrarijobinfodao;
 	
 	@RequestMapping("/save")
 	@ResponseBody
@@ -86,7 +90,7 @@ public class JobLogController {
 	}
 	
 	@RequestMapping
-	public String index(Model model, String jobName, String filterTime) {
+	public String index(Model model, @RequestParam(required = false, defaultValue = "-1") int jobInfoId) {
 		
 		// 默认filterTime
 		Calendar todayz = Calendar.getInstance();
@@ -96,8 +100,8 @@ public class JobLogController {
 		model.addAttribute("triggerTimeStart", todayz.getTime());
 		model.addAttribute("triggerTimeEnd", Calendar.getInstance().getTime());
 		
-		model.addAttribute("jobName", jobName);
-		model.addAttribute("filterTime", filterTime);
+		model.addAttribute("jobInfo", ferrarijobinfodao.get(jobInfoId));
+		model.addAttribute("groupEnum", JobGroupEnum.values());
 		return "joblog/index";
 	}
 	
@@ -105,7 +109,7 @@ public class JobLogController {
 	@ResponseBody
 	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,  
 			@RequestParam(required = false, defaultValue = "10") int length,
-			String jobName, String filterTime) {
+			String filterTime, String jobGroup, String jobName) {
 		// parse param
 		Date triggerTimeStart = null;
 		Date triggerTimeEnd = null;
@@ -122,8 +126,8 @@ public class JobLogController {
 		}
 		
 		// page query
-		List<FerrariJobLog> list = ferraliJobLogDao.pageList(start, length, jobName, triggerTimeStart, triggerTimeEnd);
-		int list_count = ferraliJobLogDao.pageListCount(start, length, jobName, triggerTimeStart, triggerTimeEnd);
+		List<FerrariJobLog> list = ferraliJobLogDao.pageList(start, length, jobGroup, jobName, triggerTimeStart, triggerTimeEnd);
+		int list_count = ferraliJobLogDao.pageListCount(start, length, jobGroup, jobName, triggerTimeStart, triggerTimeEnd);
 		
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();

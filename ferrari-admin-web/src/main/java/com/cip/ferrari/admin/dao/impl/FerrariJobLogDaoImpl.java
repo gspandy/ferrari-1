@@ -41,10 +41,11 @@ public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 	}
 
 	@Override
-	public List<FerrariJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
+	public List<FerrariJobLog> pageList(int offset, int pagesize,String jobGroup, String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
+		params.put("jobGroup", jobGroup);
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
@@ -52,10 +53,11 @@ public class FerrariJobLogDaoImpl implements IFerrariJobLogDao {
 	}
 
 	@Override
-	public int pageListCount(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
+	public int pageListCount(int offset, int pagesize,String jobGroup, String jobName, Date triggerTimeStart, Date triggerTimeEnd) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
+		params.put("jobGroup", jobGroup);
 		params.put("jobName", jobName);
 		params.put("triggerTimeStart", triggerTimeStart);
 		params.put("triggerTimeEnd", triggerTimeEnd);
