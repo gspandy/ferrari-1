@@ -62,14 +62,14 @@
 					                	<th class="jobName" >任务名</th>
 					                  	<th class="jobKey" >任务key</th>
 					                  	<th class="jobDesc" >描述</th>
-					                  	<th class="owner" >负责人</th>
 					                  	<th class="mailReceives" >邮件联系人</th>
 					                  	<th class="failAlarmNum" >报警阀值</th>
 					                  	<th class="isDeleted" >是否已删除</th>
 					                  	<th class="jobCron" >Cron</th>
 					                  	<th class="jobClass" >任务类</th>
-					                  	<th class="jobData" >任务数据</th>
+					                  	<th class="jobData" tip="任务数据" >执行机器</th>
 					                  	<th class="jobStatus" >状态</th>
+					                  	<th class="owner" >负责人</th>
 					                  	<th class="操作" >操作</th>
 					                </tr>
 				                </thead>
