@@ -183,6 +183,15 @@ public class JobController {
 		// jobKey parse
 		String triggerKeyName = DynamicSchedulerUtil.generateTriggerKey(jobGroup, jobName);
 		
+		try {
+			boolean hasExists = DynamicSchedulerUtil.hasExistsJob(triggerKeyName);
+			if(hasExists){
+				return new ReturnT<String>(500, "分组["+JobGroupEnum.valueOf(jobGroup).getDesc()+"]下任务名重复，请更改确认");
+			}
+		} catch (SchedulerException e) {
+			Logger.error("新增任务失败,查询任务是否存在发生异常,triggerKeyName="+triggerKeyName, e);
+			return ReturnT.FAIL;
+		}
 		// store
 		FerrariJobInfo jobInfo = new FerrariJobInfo();
 		jobInfo.setJobGroup(jobGroup);

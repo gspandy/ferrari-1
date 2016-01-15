@@ -230,5 +230,16 @@ public final class DynamicSchedulerUtil {
         }
         return false;
     }
+    
+    public static boolean hasExistsJob(String triggerKeyName) throws SchedulerException{
+    	// TriggerKey : name + group
+        TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, Scheduler.DEFAULT_GROUP);
+        
+        // TriggerKey valid if_exists
+		if (scheduler.checkExists(triggerKey)) {
+		    return true;
+		}
+        return false;
+    }
 
 }
