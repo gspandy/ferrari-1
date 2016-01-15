@@ -148,11 +148,11 @@
 						</div>
 						
 						<label for="firstname" class="col-sm-2 control-label">任务名</label>
-						<div class="col-sm-4"><input type="text" class="form-control" name="jobName" placeholder="请输入任务Key" minlength="4" maxlength="100" ></div>
+						<div class="col-sm-4"><input type="text" class="form-control" name="jobName" placeholder="任务名称" minlength="4" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
 						<label for="lastname" class="col-sm-2 control-label">Cron</label>
-						<div class="col-sm-4"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron" maxlength="100" ></div>
+						<div class="col-sm-4"><input type="text" class="form-control" name="cronExpression" placeholder="任务Cron" maxlength="100" ></div>
 						
 						<label for="lastname" class="col-sm-2 control-label">描述</label>
 						<div class="col-sm-4"><input type="text" class="form-control" name="job_desc" placeholder="任务描述" maxlength="200" ></div>
@@ -176,7 +176,7 @@
 						<div class="col-sm-4"><input type="text" class="form-control" name="mailReceives" placeholder="邮件联系人，多个用,分隔" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-2 control-label">连续报警阀值</label>
+						<label for="lastname" class="col-sm-2 control-label">失败报警阀值</label>
 						<div class="col-sm-4"><input type="text" class="form-control" name="failAlarmNum" placeholder="连续失败次数报警阀值" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
