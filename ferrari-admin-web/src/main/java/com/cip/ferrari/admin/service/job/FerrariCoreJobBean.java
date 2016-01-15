@@ -71,7 +71,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			if(ferrariJobInfoDao == null){
 				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
 			}
-			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.getByKey(jobKey);
 			if(jobInfo != null){
 				jobLog.setJobInfoId(jobInfo.getId());
 			}
@@ -79,7 +79,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			if(ferrariJobInfoDao == null){
 				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
 			}
-			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.getByKey(jobKey);
 			if(jobInfo != null){
 				jobLog.setJobInfoId(jobInfo.getId());
 			}

@@ -12,8 +12,6 @@ public interface IFerrariJobInfoDao {
 
 	public int save(FerrariJobInfo ferrariJobInfo);
 
-	public FerrariJobInfo loadJobInfoByGroupAndName(String jobGroup, String jobName);
-
 	// for page list
 	public List<FerrariJobInfo> pageList(int offset, int pagesize, String jobKey, String jobGroup);
 	public int pageListCount(int offset, int pagesize, String jobKey, String jobGroup);

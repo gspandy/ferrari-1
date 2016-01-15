@@ -60,14 +60,6 @@
 		</selectKey> 
 	</insert>
 	
-	<select id="loadByGroupAndName" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
-		SELECT <include refid="All_Column_List" />
-		FROM FRI_QRTZ_JobInfo
-		WHERE job_group = #{jobGroup}
-		AND   job_name = #{jobName}
-		AND   is_deleted = 0
-	</select>
-	
 	<select id="pageList" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
 		SELECT <include refid="All_Column_List" />
 		FROM FRI_QRTZ_JobInfo AS t
