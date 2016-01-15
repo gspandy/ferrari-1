@@ -45,7 +45,6 @@ $(function() {
 	                { "data": 'jobName', "bSortable": false},
 	                { "data": 'jobKey', "bSortable": false, "visible" : false},
 	                { "data": 'jobDesc', "bSortable": false, "visible" : false},
-	                { "data": 'owner', "bSortable": false},
 	                { "data": 'mailReceives', "bSortable": false, "visible" : false},
 	                { "data": 'failAlarmNum', "bSortable": false, "visible" : false},
 	                { "data": 'isDeleted', "bSortable": false, "visible" : false},
@@ -55,13 +54,12 @@ $(function() {
 	                	"render": function ( data, type, row ) {
 	                		return function(){
 	                			var _jobData = eval('(' + row.jobData + ')');
-	                			return "job_address=" + _jobData.job_address + 
-	                				"<br>" + 
-	                				"";
+	                			return _jobData.job_address;
 	                		};
 	                	}
 	                },
 	                { "data": 'jobStatus', "bSortable": false, "visible" : true},
+	                { "data": 'owner', "bSortable": false},
 	                { "data": '操作' , "bSortable": false,
 	                	"render": function ( data, type, row ) {
 	                		return function(){
