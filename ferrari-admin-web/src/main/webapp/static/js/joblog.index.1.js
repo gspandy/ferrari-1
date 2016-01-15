@@ -19,7 +19,7 @@ $(function() {
 	                { "data": 'jobName', "bSortable": false},
 	                { "data": 'jobCron', "bSortable": false, "visible" : false},
 	                { "data": 'jobClass', "bSortable": false, "visible" : false},
-	                { "data": 'jobData', "bSortable": false, "visible" : true,
+	                { "data": 'jobData', "bSortable": false, "visible" : false,
 	                	"render": function ( data, type, row ) {
 	                		return data?"<a href='javascript:;' class='logTips' title='"+ data +"'>查看数据</a>":"无";
 	                	}

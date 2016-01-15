@@ -43,7 +43,7 @@
 	            	<button class="btn btn-block btn-info" id="searchBtn">搜索</button>
 	            </div>
 	            <div class="col-xs-2">
-	            	<button class="btn btn-block btn-info addFerrari" type="button">+新增任务</button>
+	            	<button class="btn btn-block btn-warning addFerrari" type="button">+新增任务</button>
 	            	<!-- <button class="btn btn-info btn-xs add" type="button">+新增任务[ferrari-client]</button> -->
 	            </div>
           	</div>
