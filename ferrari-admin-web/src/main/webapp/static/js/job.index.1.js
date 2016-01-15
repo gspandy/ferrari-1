@@ -44,14 +44,23 @@ $(function() {
 	                },
 	                { "data": 'jobName', "bSortable": false},
 	                { "data": 'jobKey', "bSortable": false, "visible" : false},
-	                { "data": 'jobDesc', "bSortable": false},
+	                { "data": 'jobDesc', "bSortable": false, "visible" : false},
 	                { "data": 'owner', "bSortable": false},
-	                { "data": 'mailReceives', "bSortable": false},
-	                { "data": 'failAlarmNum', "bSortable": false, "visible" : true},
+	                { "data": 'mailReceives', "bSortable": false, "visible" : false},
+	                { "data": 'failAlarmNum', "bSortable": false, "visible" : false},
 	                { "data": 'isDeleted', "bSortable": false, "visible" : false},
 	                { "data": 'jobCron', "bSortable": false, "visible" : true},
 	                { "data": 'jobClass', "bSortable": false, "visible" : false},
-	                { "data": 'jobData', "bSortable": false, "visible" : false},
+	                { "data": 'jobData', "bSortable": false, "visible" : true, 
+	                	"render": function ( data, type, row ) {
+	                		return function(){
+	                			var _jobData = eval('(' + row.jobData + ')');
+	                			return "job_address=" + _jobData.job_address + 
+	                				"<br>" + 
+	                				"";
+	                		};
+	                	}
+	                },
 	                { "data": 'jobStatus', "bSortable": false, "visible" : true},
 	                { "data": '操作' , "bSortable": false,
 	                	"render": function ( data, type, row ) {
