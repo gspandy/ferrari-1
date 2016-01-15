@@ -205,7 +205,7 @@ public class JobController {
 		try {
 			boolean result = DynamicSchedulerUtil.addJob(triggerKeyName, cronExpression, FerrariCoreJobBean.class, jobData);
 			if (!result) {
-				return new ReturnT<String>(500, "任务ID重复，请更换确认");
+				return new ReturnT<String>(500, "分组["+JobGroupEnum.valueOf(jobGroup).getDesc()+"]下任务名重复，请更改确认");
 			}
 			return ReturnT.SUCCESS;
 		} catch (SchedulerException e) {
