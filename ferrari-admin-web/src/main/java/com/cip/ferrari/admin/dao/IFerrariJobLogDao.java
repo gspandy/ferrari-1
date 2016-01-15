@@ -16,8 +16,7 @@ public interface IFerrariJobLogDao {
 	
 	public int updateHandleInfo(FerrariJobLog ferrariJobLog);
 	
-	public List<FerrariJobLog> pageList(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd);
-	
-	public int pageListCount(int offset, int pagesize,String jobName, Date triggerTimeStart, Date triggerTimeEnd);
+	public List<FerrariJobLog> pageList(int offset, int pagesize,String jobGroup, String jobName, Date triggerTimeStart, Date triggerTimeEnd);
+	public int pageListCount(int offset, int pagesize,String jobGroup, String jobName, Date triggerTimeStart, Date triggerTimeEnd);
 	
 }

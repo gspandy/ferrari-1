@@ -18,7 +18,7 @@ public class FerrariJobLog{
 	private Date updateTime;
 	
 	// job info
-	private int jobInfoId;//jobInfo表自增id
+	private int jobInfoId;		// @FerrariJobInfo 表自增id
 	private String jobGroup;
 	private String jobName;
 	private String jobCron;

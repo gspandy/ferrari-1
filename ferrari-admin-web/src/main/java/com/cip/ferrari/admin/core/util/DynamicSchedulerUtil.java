@@ -1,11 +1,10 @@
 package com.cip.ferrari.admin.core.util;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -19,18 +18,18 @@ import org.quartz.Trigger;
 import org.quartz.Trigger.TriggerState;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.impl.triggers.CronTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
 
+import com.cip.ferrari.admin.common.FerrariConstantz;
+import com.cip.ferrari.admin.core.model.FerrariJobInfo;
 
 /**
  * base quartz scheduler util
  * @author xuxueli 2015-12-19 16:13:53
  */
-public final class DynamicSchedulerUtil implements InitializingBean {
+public final class DynamicSchedulerUtil {
     private static final Logger logger = LoggerFactory.getLogger(DynamicSchedulerUtil.class);
     
     
@@ -40,49 +39,43 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 		DynamicSchedulerUtil.scheduler = scheduler;
 	}
     
-	@Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(scheduler, "quartz scheduler is null");
-        if(logger.isInfoEnabled()){
-        	logger.info("###### init quartz scheduler success.[{}]", scheduler);
-        }
-    }
-	
-	/** getJobKeys
-	 * 
-	 * @return
-	 */
-	public static List<Map<String, Object>> getJobList(){
-		List<Map<String, Object>> jobList = new ArrayList<Map<String,Object>>();
-		
-		try {
-			if (scheduler.getJobGroupNames()==null || scheduler.getJobGroupNames().size()==0) {
-				return null;
+	// fill job info
+	public static void fillJobInfo(FerrariJobInfo jobInfo) {
+		// TriggerKey : name + group
+        TriggerKey triggerKey = TriggerKey.triggerKey(jobInfo.getJobKey(), Scheduler.DEFAULT_GROUP);
+        JobKey jobKey = new JobKey(jobInfo.getJobKey(), Scheduler.DEFAULT_GROUP);
+        try {
+			Trigger trigger = scheduler.getTrigger(triggerKey);
+			JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+			TriggerState triggerState = scheduler.getTriggerState(triggerKey);
+			
+			// parse quartz params
+			if (trigger!=null && trigger instanceof CronTriggerImpl) {
+				String cronExpression = ((CronTriggerImpl) trigger).getCronExpression();
+				jobInfo.setJobCron(cronExpression);
 			}
-			String groupName = scheduler.getJobGroupNames().get(0);
-			Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName));
-			if (jobKeys !=null && jobKeys.size() > 0) {
-				for (JobKey jobKey : jobKeys) {
-			        TriggerKey triggerKey = TriggerKey.triggerKey(jobKey.getName(), Scheduler.DEFAULT_GROUP);
-			        Trigger trigger = scheduler.getTrigger(triggerKey);
-			        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-			        TriggerState triggerState = scheduler.getTriggerState(triggerKey);
-			        Map<String, Object> jobMap = new HashMap<String, Object>();
-			        jobMap.put("TriggerKey", triggerKey);
-			        jobMap.put("Trigger", trigger);
-			        jobMap.put("JobDetail", jobDetail);
-			        jobMap.put("TriggerState", triggerState);
-			        jobList.add(jobMap);
-				}
+			if (jobDetail!=null) {
+				String jobClass = jobDetail.getJobClass().getName();
+				jobInfo.setJobClass(jobClass);
 			}
+			if (triggerState!=null) {
+				jobInfo.setJobStatus(triggerState.name());
+			}
+			jobInfo.setJobData(JacksonUtil.writeValueAsString(jobDetail.getJobDataMap()));
 			
 		} catch (SchedulerException e) {
-			logger.error("######query joblist exception.", e);
-			return null;
+			e.printStackTrace();
 		}
-		return jobList;
 	}
 
+	// generate quartz jobkey
+	public static String generateTriggerKey(String jobGroup, String jobName){
+		if (StringUtils.isBlank(jobGroup) || StringUtils.isBlank(jobName)) {
+			throw new IllegalArgumentException("任务参数非法");
+		}
+		return jobGroup.concat(FerrariConstantz.job_group_name_split).concat(jobName);
+	}
+	
 	/**
 	 * 新增一个job
 	 * @param triggerKeyName
@@ -94,8 +87,7 @@ public final class DynamicSchedulerUtil implements InitializingBean {
 	 */
     public static boolean addJob(String triggerKeyName, String cronExpression, Class<? extends Job> jobClass, Map<String, Object> jobData) throws SchedulerException {
     	// TriggerKey : name + group
-    	String group = Scheduler.DEFAULT_GROUP;
-        TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
+        TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, Scheduler.DEFAULT_GROUP);
         
         // TriggerKey valid if_exists
         if (scheduler.checkExists(triggerKey)) {
@@ -108,7 +100,7 @@ public final class DynamicSchedulerUtil implements InitializingBean {
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
         CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
         // JobDetail : jobClass
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(triggerKeyName, group).build();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(triggerKeyName, Scheduler.DEFAULT_GROUP).build();
         
         if (jobData !=null && jobData.size() > 0) {
         	JobDataMap jobDataMap = jobDetail.getJobDataMap();
@@ -132,21 +124,28 @@ public final class DynamicSchedulerUtil implements InitializingBean {
      * @return
      * @throws SchedulerException
      */
-    public static boolean rescheduleJob(String triggerKeyName, String cronExpression) throws SchedulerException {
+    public static boolean rescheduleJob(String triggerKeyName, String cronExpression, Map<String, Object> jobData) throws SchedulerException {
         // TriggerKey : name + group
     	String group = Scheduler.DEFAULT_GROUP;
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerKeyName, group);
         
         if (scheduler.checkExists(triggerKey)) {
             // CronTrigger : TriggerKey + cronExpression + MISFIRE_INSTRUCTION_DO_NOTHING
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
-            CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
+            CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).
+            		withSchedule(CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing()).build();
             
-            Date date = scheduler.rescheduleJob(triggerKey, cronTrigger);
-            if(date != null){
-            	return true;
-            }
-            return false;
+            // JobDetail-JobDataMap fresh
+            JobDetail jobDetail = scheduler.getJobDetail(new JobKey(triggerKeyName, group));
+        	JobDataMap jobDataMap = jobDetail.getJobDataMap();
+        	jobDataMap.clear();
+        	jobDataMap.putAll(jobData);
+        	
+        	// Trigger fresh
+        	HashSet<Trigger> triggerSet = new HashSet<Trigger>();
+        	triggerSet.add(cronTrigger);
+            
+            scheduler.scheduleJob(jobDetail, triggerSet, true);
+            return true;
         } else {
         	logger.warn("######scheduler.rescheduleJob, triggerKey not exist,key="+triggerKeyName);
         }

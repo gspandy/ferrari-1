@@ -68,5 +68,59 @@
 		AND   is_deleted = 0
 	</select>
 	
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
+		SELECT <include refid="All_Column_List" />
+		FROM FRI_QRTZ_JobInfo AS t
+		WHERE t.is_deleted = 0
+		<if test="jobGroup != null and jobGroup !=''">
+			AND t.job_group = #{jobGroup}
+		</if>
+		<if test="jobKey != null and jobKey !=''">
+			AND t.job_key like CONCAT(CONCAT('%', #{jobKey}), '%')
+		</if>
+		ORDER BY id DESC
+		LIMIT #{offset}, #{pagesize}
+	</select>
+	
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM FRI_QRTZ_JobInfo AS t
+		WHERE t.is_deleted = 0
+		<if test="jobGroup != null and jobGroup !=''">
+			AND t.job_group = #{jobGroup}
+		</if>
+		<if test="jobKey != null and jobKey !=''">
+			AND t.job_key like CONCAT(CONCAT('%', #{jobKey}), '%')
+		</if>
+	</select>
+	
+	<select id="get" parameterType="java.lang.Integer" resultMap="ferrariJobInfo">
+		SELECT <include refid="All_Column_List" />
+		FROM FRI_QRTZ_JobInfo
+		WHERE id = #{id}
+		AND   is_deleted = 0
+	</select>
+	
+	<select id="getByKey" parameterType="java.lang.String" resultMap="ferrariJobInfo">
+		SELECT <include refid="All_Column_List" />
+		FROM FRI_QRTZ_JobInfo
+		WHERE job_key = #{jobKey}
+		AND   is_deleted = 0
+	</select>
+	
+	<update id="removeJob" parameterType="java.lang.String" >
+		update FRI_QRTZ_JobInfo
+		set is_deleted = 1
+		where job_key = #{jobKey}
+	</update>
+	
+	<update id="updateJobInfo" parameterType="com.cip.ferrari.admin.core.model.FerrariJobInfo" >
+		update FRI_QRTZ_JobInfo
+		set job_desc = #{jobDesc}, 
+			owner = #{owner}, 
+			mail_receives = #{mailReceives}, 
+			fail_alarm_num = #{failAlarmNum}
+		WHERE id = #{id}
+	</update>
 	
 </mapper>

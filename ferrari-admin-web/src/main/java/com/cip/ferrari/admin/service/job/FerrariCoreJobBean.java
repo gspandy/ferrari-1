@@ -45,6 +45,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			throws JobExecutionException {
 		String triggerKeyName = context.getTrigger().getJobKey().getName();
 		Map<String, Object> jobDataMap = context.getMergedJobDataMap().getWrappedMap();
+		
 		// save log
 		FerrariJobLog jobLog = new FerrariJobLog();
 		String jobKey = context.getTrigger().getJobKey().getName();
@@ -61,6 +62,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		jobLog.setJobGroup(jobGroup);
 		jobLog.setJobName(jobName);
 		jobLog.setJobInfoId(-1);
+		
 		try{
 			Integer jobInfoId = Integer.valueOf(jobDataMap.get(FerrariConstantz.job_info_id)+"");
 			if(jobInfoId != null){

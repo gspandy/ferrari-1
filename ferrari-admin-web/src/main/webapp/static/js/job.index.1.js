@@ -1,6 +1,99 @@
 $(function() {
 	// init date tables
-	$("#job_list").DataTable({
+	var jobTable = $("#job_list").dataTable({
+		"deferRender": true,
+		"processing" : true, 
+	    "serverSide": true,
+		"ajax": {
+			url: base_url + "/job/pageList",
+	        data : function ( d ) {
+                d.jobGroup = $('#jobGroup').val();
+                d.jobName = $('#jobName').val();
+            }
+	    },
+	    "columns": [
+	                { "data": 'id', "bSortable": false, "visible" : false},
+	                { 
+	                	"data": 'addTime', 
+	                	"bSortable": false, 
+	                	"visible" : false, 
+	                	"render": function ( data, type, row ) {
+	                		return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
+	                	}
+	                },
+	                { 
+	                	"data": 'updateTime', 
+	                	"bSortable": false, 
+	                	"visible" : false, 
+	                	"render": function ( data, type, row ) {
+	                		return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
+	                	}
+	                },
+	                { "data": 'jobGroup', "bSortable": false, 
+	                	"render": function ( data, type, row ) {
+	                		return function(){
+	                			var groupMenu = $("#jobGroup").find("option");
+	                			for ( var index in $("#jobGroup").find("option")) {
+	                				if ($(groupMenu[index]).attr('value') == data) {
+										return $(groupMenu[index]).html();
+									}
+								}
+	                			return data;
+	                		};
+	                	}
+	                },
+	                { "data": 'jobName', "bSortable": false},
+	                { "data": 'jobKey', "bSortable": false, "visible" : false},
+	                { "data": 'jobDesc', "bSortable": false},
+	                { "data": 'owner', "bSortable": false},
+	                { "data": 'mailReceives', "bSortable": false},
+	                { "data": 'failAlarmNum', "bSortable": false, "visible" : true},
+	                { "data": 'isDeleted', "bSortable": false, "visible" : false},
+	                { "data": 'jobCron', "bSortable": false, "visible" : true},
+	                { "data": 'jobClass', "bSortable": false, "visible" : false},
+	                { "data": 'jobData', "bSortable": false, "visible" : false},
+	                { "data": 'jobStatus', "bSortable": false, "visible" : true},
+	                { "data": '操作' , "bSortable": false,
+	                	"render": function ( data, type, row ) {
+	                		return function(){
+	                			// status
+	                			var pause_resume = "";
+	                			if ('NORMAL' == row.jobStatus) {
+	                				pause_resume = '<button class="btn btn-info btn-xs job_operate" type="job_pause" type="button">暂停</button>  ';
+								} else if ('PAUSED' == row.jobStatus){
+									pause_resume = '<button class="btn btn-info btn-xs job_operate" type="job_resume" type="button">恢复</button>  ';
+								}
+	                			// log url
+	                			var logUrl = base_url +'/joblog?jobInfoId='+ row.id;
+	                			var _jobData = eval('(' + row.jobData + ')');
+	                			var html = '<p jobKey="'+ row.jobKey +'" ' + 
+				                			' jobGroup="'+ row.jobGroup +'" ' +
+				                			' jobName="'+ row.jobName +'" ' +
+			                				' cronExpression="'+ row.jobCron +'" ' +
+	                						' jobDesc="'+ row.jobDesc +'" ' +
+	                						' owner="'+ row.owner +'" ' +
+	                						' mailReceives="'+ row.mailReceives +'" ' +
+	                						' failAlarmNum="'+ row.failAlarmNum +'" ' +
+	                						' job_address="'+ _jobData.job_address +'" ' +
+	                						' run_class="'+ _jobData.run_class +'" ' +
+	                						' run_method="'+ _jobData.run_method +'" ' +
+	                						' run_method_args="'+ _jobData.run_method_args +'" ' +
+	                						'>'+
+	                					pause_resume +
+										'<button class="btn btn-info btn-xs job_operate" type="job_trigger" type="button">执行</button>  '+
+										'<button class="btn btn-info btn-xs update" type="button">编辑</button> <br> '+
+									  	'<button class="btn btn-danger btn-xs job_operate" type="job_del" type="button">删除</button>  '+
+									  	'<button class="btn btn-warning btn-xs" type="job_del" type="button" '+
+									  		'onclick="javascript:window.open(\'' + logUrl + '\')" >查看日志</button>'+
+									'</p>';
+									
+	                			return html;
+	                		};
+	                	}
+	                }
+	            ],
+	    "searching": false,
+	    "ordering": true,
 		"language" : {
 			"sProcessing" : "处理中...",
 			"sLengthMenu" : "每页 _MENU_ 条记录",
@@ -26,9 +119,12 @@ $(function() {
 			}
 		}
 	});
+	$('#searchBtn').on('click', function(){
+		jobTable.fnDraw();
+	});
 	
 	// job operate
-	$(".job_operate").click(function() {
+	$("#job_list").on('click', '.job_operate',function() {
 		var typeName;
 		var url;
 		var type = $(this).attr("type");
@@ -48,22 +144,18 @@ $(function() {
 			return;
 		}
 		
-		var name = $(this).parent('p').attr("name");
-		var group = $(this).parent('p').attr("group");
+		var jobKey = $(this).parent('p').attr("jobKey");
 		
 		ComConfirm.show("确认" + typeName + "?", function(){
 			$.ajax({
 				type : 'POST',
 				url : url,
-				data : {
-					"triggerKeyName" :	name,
-					"group"			 :	group
-				},
+				data : {"triggerKeyName":jobKey},
 				dataType : "json",
 				success : function(data){
 					if (data.code == 200) {
 						ComAlert.show(1, typeName + "成功", function(){
-							window.location.reload();
+							jobTable.fnDraw();
 						});
 					} else {
 						ComAlert.show(1, typeName + "失败");
@@ -213,9 +305,19 @@ $(function() {
 	});
 	
 	// 更新
-	$(".update").click(function(){
-		$("#updateModal .form input[name='triggerKeyName']").val($(this).parent('p').attr("name"));
+	$("#job_list").on('click', '.update',function() {
+		$("#updateModal .form input[name='triggerKeyName']").val($(this).parent('p').attr("jobKey"));
+		$("#updateModal .form input[name='jobGroup']").val($(this).parent('p').attr("jobGroup"));
+		$("#updateModal .form input[name='jobName']").val($(this).parent('p').attr("jobName"));
 		$("#updateModal .form input[name='cronExpression']").val($(this).parent('p').attr("cronExpression"));
+		$("#updateModal .form input[name='job_address']").val($(this).parent('p').attr("job_address"));
+		$("#updateModal .form input[name='run_class']").val($(this).parent('p').attr("run_class"));
+		$("#updateModal .form input[name='run_method']").val($(this).parent('p').attr("run_method"));
+		$("#updateModal .form input[name='run_method_args']").val($(this).parent('p').attr("run_method_args"));
+		$("#updateModal .form input[name='job_desc']").val($(this).parent('p').attr("jobDesc"));
+		$("#updateModal .form input[name='owner']").val($(this).parent('p').attr("owner"));
+		$("#updateModal .form input[name='mailReceives']").val($(this).parent('p').attr("mailReceives"));
+		$("#updateModal .form input[name='failAlarmNum']").val($(this).parent('p').attr("failAlarmNum"));
 		$('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
 	});
 	var updateModalValidate = $("#updateModal .form").validate({
@@ -231,6 +333,38 @@ $(function() {
             cronExpression : {  
             	required : true ,
                 maxlength: 100
+            },  
+            job_desc : {  
+            	required : true ,
+                maxlength: 200
+            },
+            job_address : {
+            	required : true ,
+                maxlength: 200
+            },
+            run_class : {
+            	required : true ,
+                maxlength: 200
+            },
+            run_method : {
+            	required : true ,
+                maxlength: 200
+            },
+            run_method_args : {
+            	required : false ,
+                maxlength: 200
+            },
+            owner : {
+            	required : true ,
+                maxlength: 200
+            },
+            mailReceives : {
+            	required : true ,
+                maxlength: 200
+            },
+            failAlarmNum : {
+            	required : true ,
+            	digits:true
             }
         }, 
         messages : {  
@@ -242,6 +376,38 @@ $(function() {
             cronExpression : {
             	required :"请输入“任务Corn”."  ,
                 maxlength:"“任务Corn”不应超过100位"
+            },  
+            job_desc : {
+            	required :"请输入“任务描述”."  ,
+                maxlength:"长度不应超过200位"
+            },  
+            job_address : {
+            	required :"请输入“任务机器”."  ,
+                maxlength:"长度不应超过200位"
+            },
+            run_class : {
+            	required : "请输入“期望执行的类”."  ,
+                maxlength: "长度不应超过200位"
+            },
+            run_method : {
+            	required : "请输入“期望执行的方法”."  ,
+                maxlength: "长度不应超过200位"
+            },
+            run_method_args : {
+            	required : "请输入“方法入参”."  ,
+                maxlength: "长度不应超过200位"
+            },
+            owner : {
+            	required : "请输入“负责人”." ,
+                maxlength: "长度不应超过200位"
+            },
+            mailReceives : {
+            	required : "请输入“邮件联系人”." ,
+                maxlength: "长度不应超过200位"
+            },
+            failAlarmNum : {
+            	required : "请输入“连续报警阀值”." ,
+            	digits:"阀值应该为整数."
             }
         }, 
 		highlight : function(element) {  
@@ -258,7 +424,8 @@ $(function() {
     		$.post(base_url + "/job/reschedule", $("#updateModal .form").serialize(), function(data, status) {
     			if (data.code == "200") {
     				ComAlert.show(1, "更新成功", function(){
-    					window.location.reload();
+    					$('#updateModal').modal({backdrop: false, keyboard: false}).modal('hide');
+    					jobTable.fnDraw();
     				});
     			} else {
     				if (data.msg) {
@@ -283,7 +450,7 @@ $(function() {
         errorClass : 'help-block',
         focusInvalid : true,  
         rules : {  
-        	triggerKeyName : {  
+        	jobName : {  
         		required : true ,
                 minlength: 4,
                 maxlength: 100,
@@ -312,11 +479,23 @@ $(function() {
             run_method_args : {
             	required : false ,
                 maxlength: 200
+            },
+            owner : {
+            	required : true ,
+                maxlength: 200
+            },
+            mailReceives : {
+            	required : true ,
+                maxlength: 200
+            },
+            failAlarmNum : {
+            	required : true ,
+            	digits:true
             }
         }, 
         messages : {  
-        	triggerKeyName : {  
-        		required :"请输入“请输入任务Key”."  ,
+        	jobName : {  
+        		required :"请输入“请输入任务名”."  ,
                 minlength:"长度不应低于4位",
                 maxlength:"长度不应超过100位"
             },  
@@ -343,6 +522,18 @@ $(function() {
             run_method_args : {
             	required : "请输入“方法入参”."  ,
                 maxlength: "长度不应超过200位"
+            },
+            owner : {
+            	required : "请输入“负责人”." ,
+                maxlength: "长度不应超过200位"
+            },
+            mailReceives : {
+            	required : "请输入“邮件联系人”." ,
+                maxlength: "长度不应超过200位"
+            },
+            failAlarmNum : {
+            	required : "请输入“连续报警阀值”." ,
+            	digits:"阀值应该为整数."
             }
         }, 
 		highlight : function(element) {  
@@ -373,6 +564,7 @@ $(function() {
 		}
 	});
 	$("#addFerrariModal").on('hide.bs.modal', function () {
-		$("#addFerrariModal .form")[0].reset()
+		$("#addFerrariModal .form .form-group").removeClass("has-error");
+		addModalValidate.resetForm();
 	});
 });

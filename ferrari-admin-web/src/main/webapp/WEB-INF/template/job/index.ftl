@@ -18,93 +18,62 @@
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1>调度管理</h1>
-			<!-- 
-			<ol class="breadcrumb">
-				<li><a><i class="fa fa-dashboard"></i>调度管理</a></li>
-				<li class="active">调度中心</li>
-			</ol>
-			-->
-		</section>
+		<section class="content-header"><h1>调度管理</h1></section>
 		
 		<!-- Main content -->
 	    <section class="content">
+	    	<div class="row">
+	    		<div class="col-xs-4">
+	              	<div class="input-group">
+	                	<span class="input-group-addon">任务组</span>
+                		<select class="form-control" id="jobGroup" >
+                			<#list groupEnum as group>
+                				<option value="${group}" >${group.desc}</option>
+                			</#list>
+	                  	</select>
+	              	</div>
+	            </div>
+	            <div class="col-xs-4">
+	              	<div class="input-group">
+	                	<span class="input-group-addon">任务名</span>
+	                	<input type="text" class="form-control" id="jobName" autocomplete="on" >
+	              	</div>
+	            </div>
+	            <div class="col-xs-2">
+	            	<button class="btn btn-block btn-info" id="searchBtn">搜索</button>
+	            </div>
+	            <div class="col-xs-2">
+	            	<button class="btn btn-block btn-info addFerrari" type="button">+新增任务</button>
+	            	<!-- <button class="btn btn-info btn-xs add" type="button">+新增任务[ferrari-client]</button> -->
+	            </div>
+          	</div>
+	    
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="box">
-			            <div class="box-header">
-			            	<!-- <h3 class="box-title">调度列表</h3> -->
-			            	<button class="btn btn-info btn-xs addFerrari" type="button">+新增任务</button>
-			            	<!-- <button class="btn btn-info btn-xs add" type="button">+新增任务[ferrari-client]</button> -->
-			            </div>
 			            <div class="box-body">
 			              	<table id="job_list" class="table table-bordered table-striped">
 				                <thead>
 					            	<tr>
-					                	<th>任务key</th>
-					                  	<th>cron</th>
-					                  	<!--<th>类路径</th>-->
-					                  	<th>参数</th>
-					                  	<th>状态</th>
-					                  	<th>操作</th>
+					            		<th class="id" >id</th>
+					            		<th class="addTime" >创建时间</th>
+					            		<th class="updateTime" >更新时间</th>
+					            		<th class="jobGroup" >任务组</th>
+					                	<th class="jobName" >任务名</th>
+					                  	<th class="jobKey" >任务key</th>
+					                  	<th class="jobDesc" >描述</th>
+					                  	<th class="owner" >负责人</th>
+					                  	<th class="mailReceives" >邮件联系人</th>
+					                  	<th class="failAlarmNum" >报警阀值</th>
+					                  	<th class="isDeleted" >是否已删除</th>
+					                  	<th class="jobCron" >Cron</th>
+					                  	<th class="jobClass" >任务类</th>
+					                  	<th class="jobData" >任务数据</th>
+					                  	<th class="jobStatus" >状态</th>
+					                  	<th class="操作" >操作</th>
 					                </tr>
 				                </thead>
-				                <tbody>
-			                		<#if jobList?exists && jobList?size gt 0>
-									<#list jobList as item>
-									<tr>
-					            		<td>${item['TriggerKey'].name}</td>
-					                  	<td>${item['Trigger'].cronExpression}</td>
-					                  	<!--<td>${item['JobDetail'].jobClass}</td>-->
-					                  	<td>
-					                  		<#assign jobDataMap = item['JobDetail'].jobDataMap />
-					                  		<#if jobDataMap?exists && jobDataMap?keys?size gt 0>
-					                  			<#list jobDataMap?keys as key>
-					                  				${key}	=	${jobDataMap[key]}	<br>
-					                  			</#list>
-					                  		</#if>
-					                  	</td>
-					                  	<td state="${item['TriggerState']}" >
-					                  		<#if item['TriggerState'] == 'NORMAL'>
-					                  			<button class="btn btn-block btn-success" type="button">SCHEDULED</button>
-					                  		<#elseif item['TriggerState'] == 'PAUSED'>
-					                  			<button class="btn btn-block btn-warning" type="button">SUSPEND</button>
-					                  		<#else>
-					                  			<button class="btn btn-block" type="button">${item['TriggerState']}</button>
-					                  		</#if>
-					                  	</td>
-					                  	<td>
-											<p name="${item['TriggerKey'].name}" group="${item['TriggerKey'].group}" 
-												cronExpression="${item['Trigger'].cronExpression}" jobClassName="${item['JobDetail'].jobClass}" jobDesc="${job_desc?if_exists}" >
-												<#if item['TriggerState'] == 'NORMAL'>
-													<button class="btn btn-info btn-xs job_operate" type="job_pause" type="button">暂停</button>
-												<#elseif item['TriggerState'] == 'PAUSED'>
-													<button class="btn btn-info btn-xs job_operate" type="job_resume" type="button">恢复</button>
-												</#if>
-												<button class="btn btn-info btn-xs job_operate" type="job_trigger" type="button">执行</button>
-												<button class="btn btn-info btn-xs update" type="button">更新cron</button>
-											  	<button class="btn btn-danger btn-xs job_operate" type="job_del" type="button">删除</button>
-											  	<button class="btn btn-warning btn-xs" type="job_del" type="button" 
-											  		onclick="javascript:window.open('${request.contextPath}/joblog?jobName=${item['TriggerKey'].name}')" >运行历史</button>
-											</p>
-					                  	</td>
-					                </tr>
-									</#list>
-									</#if>
-				                </tbody>
-				                <!--
-				                <tfoot>
-					            	<tr>
-					                  	<th>任务key</th>
-					                  	<th>cron</th>
-					                  	<!--<th>类路径</th>
-					                  	<th>参数</th>
-					                  	<th>状态</th>
-					                  	<th>操作</th>
-					                </tr>
-				                </tfoot>
-				                -->
+				                <tbody></tbody>
 							</table>
 						</div>
 					</div>
@@ -115,8 +84,6 @@
 	
 	<!-- footer -->
 	<@netCommon.commonFooter />
-	<!-- control -->
-	<@netCommon.commonControl />
 </div>
 
 <!-- job新增.模态框 -->
@@ -163,7 +130,7 @@
 
 <!-- job新增.模态框[点评Ferrari定制任务] -->
 <div class="modal fade" id="addFerrariModal" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
             	<h4 class="modal-title" >新增任务调度信息</h4>
@@ -171,32 +138,46 @@
          	<div class="modal-body">
 				<form class="form-horizontal form" role="form" >
 					<div class="form-group">
-						<label for="firstname" class="col-sm-3 control-label">任务Key</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="triggerKeyName" placeholder="请输入任务Key[不支持修改,全局唯一标识]" minlength="4" maxlength="100" ></div>
+						<label for="firstname" class="col-sm-2 control-label">任务组</label>
+						<div class="col-sm-4">
+							<select class="form-control" name="jobGroup" >
+		            			<#list groupEnum as group>
+		            				<option value="${group}" >${group.desc}</option>
+		            			</#list>
+		                  	</select>
+						</div>
+						
+						<label for="firstname" class="col-sm-2 control-label">任务名</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="jobName" placeholder="请输入任务Key" minlength="4" maxlength="100" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务Cron</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron[允许修改]" maxlength="100" ></div>
+						<label for="lastname" class="col-sm-2 control-label">Cron</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron" maxlength="100" ></div>
+						
+						<label for="lastname" class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="job_desc" placeholder="任务描述" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务描述</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="job_desc" placeholder="任务描述[不支持修改]" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行机器地址</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="job_address" placeholder="机器地址IP:PORT" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行类</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_class" placeholder="执行类" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务机器</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="job_address" placeholder="机器地址IP:PORT[不支持修改]" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行方法</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_method" placeholder="执行方法" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行方法入参</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_method_args" placeholder="执行方法入参" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">期望执行的类名</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="run_class" placeholder="期望执行的类,包含package[不支持修改]" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">负责人</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="owner" placeholder="负责人" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">邮件联系人</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="mailReceives" placeholder="邮件联系人，多个用,分隔" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">期望执行的方法</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="run_method" placeholder="期望运行的方法[不支持修改]" maxlength="200" ></div>
-					</div>
-					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">方法入参</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="run_method_args" placeholder="方法入参，多个参数用,分隔[不支持修改,可以为空]" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">连续报警阀值</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="failAlarmNum" placeholder="连续失败次数报警阀值" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
@@ -212,20 +193,48 @@
 
 <!-- 更新.模态框 -->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-            	<h4 class="modal-title" >更新cron</h4>
+            	<h4 class="modal-title" >编辑任务信息</h4>
          	</div>
          	<div class="modal-body">
 				<form class="form-horizontal form" role="form" >
+					<input type="hidden" name="triggerKeyName"  readonly>
 					<div class="form-group">
-						<label for="firstname" class="col-sm-2 control-label">任务Key</label>
-						<div class="col-sm-10"><input type="text" class="form-control" name="triggerKeyName" placeholder="请输入任务Key" minlength="4" maxlength="100" readonly ></div>
+						<label for="firstname" class="col-sm-2 control-label">任务组</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="jobGroup"  minlength="4" maxlength="100" readonly></div>
+						<label for="firstname" class="col-sm-2 control-label">任务名</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="jobName"  minlength="4" maxlength="100" readonly></div>
 					</div>
 					<div class="form-group">
-						<label for="lastname" class="col-sm-2 control-label">任务Cron</label>
-						<div class="col-sm-10"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron" maxlength="100" ></div>
+						<label for="lastname" class="col-sm-2 control-label">Cron</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron" maxlength="100" ></div>
+						
+						<label for="lastname" class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="job_desc" placeholder="任务描述" maxlength="200" ></div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">执行机器地址</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="job_address" placeholder="机器地址IP:PORT" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行类</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_class" placeholder="执行类" maxlength="200" ></div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">执行方法</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_method" placeholder="执行方法" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">执行方法入参</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="run_method_args" placeholder="执行方法入参" maxlength="200" ></div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">负责人</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="owner" placeholder="负责人" maxlength="200" ></div>
+						<label for="lastname" class="col-sm-2 control-label">邮件联系人</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="mailReceives" placeholder="邮件联系人，多个用,分隔" maxlength="200" ></div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">连续报警阀值</label>
+						<div class="col-sm-4"><input type="text" class="form-control" name="failAlarmNum" placeholder="连续失败次数报警阀值" maxlength="200" ></div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
@@ -245,6 +254,7 @@
 <script src="${request.contextPath}/static/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${request.contextPath}/static/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${request.contextPath}/static/plugins/jquery/jquery.validate.min.js"></script>
+<script src="${request.contextPath}/static/adminlte/plugins/daterangepicker/moment.min.js"></script>
 <script>var base_url = '${request.contextPath}';</script>
 <script src="${request.contextPath}/static/js/job.index.1.js"></script>
 </body>
