@@ -218,8 +218,8 @@ $(function() {
                 maxlength:"“任务Key”长度不应超过100位"
             },  
             cronExpression : {
-            	required :"请输入“任务Corn”."  ,
-                maxlength:"“任务Corn”长度不应超过100位"
+            	required :"请输入“任务Cron”."  ,
+                maxlength:"“任务Cron”长度不应超过100位"
             },  
             job_desc : {
             	required :"请输入“任务描述”."  ,
@@ -381,8 +381,8 @@ $(function() {
                 maxlength:"“任务Key”不应超过100位"
             },  
             cronExpression : {
-            	required :"请输入“任务Corn”."  ,
-                maxlength:"“任务Corn”不应超过100位"
+            	required :"请输入“任务Cron”."  ,
+                maxlength:"“任务Cron”不应超过100位"
             },  
             job_desc : {
             	required :"请输入“任务描述”."  ,
@@ -502,45 +502,45 @@ $(function() {
         }, 
         messages : {  
         	jobName : {  
-        		required :"请输入“请输入任务名”."  ,
+        		required :"请输入“任务名”"  ,
                 minlength:"长度不应低于4位",
                 maxlength:"长度不应超过100位"
             },  
             cronExpression : {
-            	required :"请输入“请输入任务Cron”."  ,
+            	required :"请输入“任务Cron”"  ,
                 maxlength:"长度不应超过100位"
             },  
             job_desc : {
-            	required :"请输入“任务描述”."  ,
+            	required :"请输入“任务描述”"  ,
                 maxlength:"长度不应超过200位"
             },  
             job_address : {
-            	required :"请输入“任务机器”."  ,
+            	required :"请输入“任务机器”"  ,
                 maxlength:"长度不应超过200位"
             },
             run_class : {
-            	required : "请输入“期望执行的类”."  ,
+            	required : "请输入“期望执行的类”"  ,
                 maxlength: "长度不应超过200位"
             },
             run_method : {
-            	required : "请输入“期望执行的方法”."  ,
+            	required : "请输入“期望执行的方法”"  ,
                 maxlength: "长度不应超过200位"
             },
             run_method_args : {
-            	required : "请输入“方法入参”."  ,
+            	required : "请输入“方法入参”"  ,
                 maxlength: "长度不应超过200位"
             },
             owner : {
-            	required : "请输入“负责人”." ,
+            	required : "请输入“负责人”" ,
                 maxlength: "长度不应超过200位"
             },
             mailReceives : {
-            	required : "请输入“邮件联系人”." ,
+            	required : "请输入“邮件联系人”" ,
                 maxlength: "长度不应超过200位"
             },
             failAlarmNum : {
-            	required : "请输入“连续报警阀值”." ,
-            	digits:"阀值应该为整数."
+            	required : "请输入“连续报警阀值”" ,
+            	digits:"阀值应该为整数"
             }
         }, 
 		highlight : function(element) {  

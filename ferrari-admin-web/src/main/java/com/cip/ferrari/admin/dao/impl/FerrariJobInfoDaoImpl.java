@@ -8,10 +8,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-
 import com.cip.ferrari.admin.core.model.FerrariJobInfo;
 import com.cip.ferrari.admin.dao.IFerrariJobInfoDao;
 
@@ -32,17 +30,6 @@ public class FerrariJobInfoDaoImpl implements IFerrariJobInfoDao {
 		return sqlSessionTemplate.insert("FerrariJobInfoMapper.save", ferrariJobInfo);
 	}
 	
-	@Override
-	public FerrariJobInfo loadJobInfoByGroupAndName(String jobGroup,String jobName){
-		if(StringUtils.isBlank(jobGroup) || StringUtils.isBlank(jobName)){
-			return null;
-		}
-		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put("jobGroup", jobGroup);
-		params.put("jobName", jobName);
-		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.loadByGroupAndName", params);
-	}
-
 	@Override
 	public List<FerrariJobInfo> pageList(int offset, int pagesize, String jobKey, String jobGroup) {
 		HashMap<String, Object> params = new HashMap<String, Object>();

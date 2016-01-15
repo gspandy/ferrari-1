@@ -71,7 +71,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			if(ferrariJobInfoDao == null){
 				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
 			}
-			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.getByKey(jobKey);
 			if(jobInfo != null){
 				jobLog.setJobInfoId(jobInfo.getId());
 			}
@@ -79,7 +79,7 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 			if(ferrariJobInfoDao == null){
 				ferrariJobInfoDao = (IFerrariJobInfoDao) FerrariBeanFactory.getBean(FerrariJobInfoDaoImpl.BeanName);
 			}
-			FerrariJobInfo  jobInfo = ferrariJobInfoDao.loadJobInfoByGroupAndName(jobGroup, jobName);
+			FerrariJobInfo  jobInfo = ferrariJobInfoDao.getByKey(jobKey);
 			if(jobInfo != null){
 				jobLog.setJobInfoId(jobInfo.getId());
 			}
@@ -132,8 +132,8 @@ public class FerrariCoreJobBean extends QuartzJobBean {
 		}
 		
 		// update trigger info
-		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1500) {
-			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1500));
+		if (jobLog.getTriggerMsg()!=null && jobLog.getTriggerMsg().length()>1900) {
+			jobLog.setTriggerMsg(jobLog.getTriggerMsg().substring(0, 1880));
 		}
 		ferrariJobLogDao.updateTriggerInfo(jobLog);
 		if(logger.isInfoEnabled()){

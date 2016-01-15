@@ -60,14 +60,6 @@
 		</selectKey> 
 	</insert>
 	
-	<select id="loadByGroupAndName" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
-		SELECT <include refid="All_Column_List" />
-		FROM FRI_QRTZ_JobInfo
-		WHERE job_group = #{jobGroup}
-		AND   job_name = #{jobName}
-		AND   is_deleted = 0
-	</select>
-	
 	<select id="pageList" parameterType="java.util.HashMap" resultMap="ferrariJobInfo">
 		SELECT <include refid="All_Column_List" />
 		FROM FRI_QRTZ_JobInfo AS t
@@ -110,8 +102,10 @@
 	
 	<update id="removeJob" parameterType="java.lang.String" >
 		update FRI_QRTZ_JobInfo
-		set is_deleted = 1
+		set is_deleted = 1,
+			update_time = now()
 		where job_key = #{jobKey}
+		AND   is_deleted = 0
 	</update>
 	
 	<update id="updateJobInfo" parameterType="com.cip.ferrari.admin.core.model.FerrariJobInfo" >
@@ -119,7 +113,8 @@
 		set job_desc = #{jobDesc}, 
 			owner = #{owner}, 
 			mail_receives = #{mailReceives}, 
-			fail_alarm_num = #{failAlarmNum}
+			fail_alarm_num = #{failAlarmNum},
+			update_time = now()
 		WHERE id = #{id}
 	</update>
 	
