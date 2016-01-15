@@ -52,8 +52,8 @@ public class JobLogController {
 			log.setHandleStatus(status);
 			log.setHandleMsg(msg);
 			
-			if (log.getHandleMsg()!=null && log.getHandleMsg().length()>1500) {
-				log.setHandleMsg(log.getHandleMsg().substring(0, 1500));
+			if (log.getHandleMsg()!=null && log.getHandleMsg().length()>1900) {
+				log.setHandleMsg(log.getHandleMsg().substring(0, 1850));
 			}
 			
 			ferraliJobLogDao.updateHandleInfo(log);
