@@ -110,7 +110,8 @@
 	
 	<update id="removeJob" parameterType="java.lang.String" >
 		update FRI_QRTZ_JobInfo
-		set is_deleted = 1
+		set is_deleted = 1,
+			update_time = now()
 		where job_key = #{jobKey}
 	</update>
 	
@@ -119,7 +120,8 @@
 		set job_desc = #{jobDesc}, 
 			owner = #{owner}, 
 			mail_receives = #{mailReceives}, 
-			fail_alarm_num = #{failAlarmNum}
+			fail_alarm_num = #{failAlarmNum},
+			update_time = now()
 		WHERE id = #{id}
 	</update>
 	
