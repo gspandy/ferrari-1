@@ -86,48 +86,6 @@
 	<@netCommon.commonFooter />
 </div>
 
-<!-- job新增.模态框 -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-            	<h4 class="modal-title" >新增调度信息</h4>
-         	</div>
-         	<div class="modal-body">
-				<form class="form-horizontal form" role="form" >
-					<div class="form-group">
-						<label for="firstname" class="col-sm-3 control-label">任务Key</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="triggerKeyName" placeholder="请输入任务Key(全局唯一标识)" minlength="4" maxlength="100" ></div>
-					</div>
-					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务Cron</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="cronExpression" placeholder="请输入任务Cron表达式[允许修改]" maxlength="100" ></div>
-					</div>
-					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务描述</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="job_desc" placeholder="请输入任务描述[不支持修改]" maxlength="200" ></div>
-					</div>
-					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务URL</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="job_url" placeholder="请输入任务URL[不支持修改]" maxlength="200" ></div>
-					</div>
-					<div class="form-group">
-						<label for="lastname" class="col-sm-3 control-label">任务handler</label>
-						<div class="col-sm-9"><input type="text" class="form-control" name="handleName" placeholder="请输入任务handler[不支持修改]" maxlength="200" ></div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" class="btn btn-primary">保存</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-info pull-right addParam">+ arg</button>
-						</div>
-					</div>
-				</form>
-         	</div>
-		</div>
-	</div>
-</div>
-
 <!-- job新增.模态框[点评Ferrari定制任务] -->
 <div class="modal fade" id="addFerrariModal" tabindex="-1" role="dialog"  aria-hidden="true">
 	<div class="modal-dialog modal-lg">
