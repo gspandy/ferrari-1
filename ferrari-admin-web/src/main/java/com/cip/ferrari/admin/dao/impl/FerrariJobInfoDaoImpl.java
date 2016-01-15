@@ -60,7 +60,11 @@ public class FerrariJobInfoDaoImpl implements IFerrariJobInfoDao {
 		params.put("pagesize", pagesize);
 		params.put("jobKey", jobKey);
 		params.put("jobGroup", jobGroup);
-		return sqlSessionTemplate.selectOne("FerrariJobInfoMapper.pageListCount", params);
+		Integer result = sqlSessionTemplate.selectOne("FerrariJobInfoMapper.pageListCount", params);
+		if(result == null){
+			return 0;
+		}
+		return result;
 	}
 
 	@Override
