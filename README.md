@@ -1,6 +1,3 @@
-# Ferrari说明
-#### 如果阅读完文档后，还有任何疑问，请mail to [tengkai.yuan@dianping.com, xueli.xue@dianping.com]
-
 **Ferrari**是一种云调度服务平台，基于quartz实现定时调度。ferrari本身不执行任何任务，只是进行触发任务执行（通过http远程触发）.
 
 ## ======Quick Start======
@@ -32,6 +29,6 @@
 
 应用中的任务类是 ***[多例]***
 
-最后，到任务调度中心(ferrari-admin-web应用)配置新增一个任务即可。
+最后，到任务调度中心配置新增一个任务即可。
 
 
